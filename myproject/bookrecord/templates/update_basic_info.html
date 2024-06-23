@@ -1,0 +1,57 @@
+<!-- templates/update_basic_info.html -->
+{% extends 'base.html' %}
+
+{% block title %}Update Basic Info{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="my-4">Update Basic Info</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_title">タイトル</label>
+                    {{ form.title }}
+                </div>
+                <div class="form-group">
+                    <label for="id_genre">ジャンル</label>
+                    {{ form.genre }}
+                </div>
+                <div class="form-group">
+                    <label for="id_cover_image">カバー画像</label>
+                    {{ form.cover_image }}
+                </div>
+                <div class="form-group">
+                    <label for="id_summary">概要</label>
+                    {{ form.summary }}
+                </div>
+                <div class="form-group">
+                    <label for="id_purpose">目的</label>
+                    {{ form.purpose }}
+                </div>
+                <div class="form-group">
+                    <label for="id_buy_reason">購入理由</label>
+                    {{ form.buy_reason }}
+                </div>
+                <div class="form-group">
+                    <label for="id_tags">タグ</label>
+                    <div id="tag-list">
+                        <div class="input-group mb-3">
+                            <input type="text" name="tags" class="form-control" placeholder="Tag">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary" type="button" id="add-tag-button"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_is_finished">完了</label>
+                    {{ form.is_finished }}
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

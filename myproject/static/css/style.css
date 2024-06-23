@@ -1,0 +1,98 @@
+/* static/css/custom.css */
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 1rem;
+}
+
+/* サイドバースタイル */
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidebar {
+        padding-top: 15px;
+    }
+
+    .sidebar a {
+        font-size: 18px;
+    }
+}
+
+
+.input-group-text {
+    background-color: #fff;
+    border-right: none;
+}
+
+.input-group .form-control {
+    border-left: none;
+    box-shadow: none;
+}
+
+.input-group .btn {
+    border-left: none;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+}
+
+.container-with-margin {
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.custom-input {
+    width: 100%;
+    max-width: 300px; /* 最大幅を300pxに設定 */
+    padding: 10px;    /* パディングを10pxに設定 */
+    font-size: 16px;  /* フォントサイズを16pxに設定 */
+}
+
+.card-custom-bg {
+    background-color: #ffe4b5; /* ここで背景色を指定 */
+    border: 1px solid #e3e3e3; /* 枠線を追加して視覚的にわかりやすく */
+}
+

@@ -1,0 +1,16 @@
+# bookrecord/fixtures/genres.yaml
+- model: bookrecord.genre
+  pk: 1
+  fields:
+    genre_name: Genre A
+
+- model: bookrecord.genre
+  pk: 2
+  fields:
+    genre_name: Genre B
+
+- model: bookrecord.genre
+  pk: 3
+  fields:
+    genre_name: Genre C
+

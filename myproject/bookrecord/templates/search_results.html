@@ -1,0 +1,40 @@
+<!-- templates/search_results.html -->
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Search Results for "{{ query }}"</h2>
+    <div class="row">
+        {% if books %}
+            {% for book in books %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <a href="{% url 'detail' book.book_code %}">
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
+                            {% else %}
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px; width: 100%;">
+                                    No image
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
+                            </h5>
+                            <div class="mt-auto">
+                                <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
+                                <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!-- templates/postreading.html -->
+{% extends 'base.html' %}
+
+{% block title %}Add Post Reading Summary{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="my-4">Add Post Reading Summary</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_registration_date">日付</label>
+                    {{ form.registration_date }}
+                </div>
+                <div class="form-group">
+                    <label for="id_impression">感想</label>
+                    {{ form.impression }}
+                </div>
+                <div class="form-group">
+                    <label for="id_learning">学び</label>
+                    {{ form.learning }}
+                </div>
+                <div class="form-group">
+                    <label for="id_satisfaction_level">満足度</label>
+                    {{ form.satisfaction_level }}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

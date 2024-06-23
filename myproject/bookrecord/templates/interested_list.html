@@ -1,0 +1,40 @@
+<!-- templates/interested_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Interested Books{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Your Interested Books</h2>
+    <div class="row">
+        {% if interested_books %}
+            {% for interested_book in interested_books %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <a href="{% url 'detail' interested_book.book.book_code %}">
+                            {% if interested_book.book.cover_image %}
+                                <img src="{{ interested_book.book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ interested_book.book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
+                            {% else %}
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px; width: 100%;">
+                                    No image
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <a href="{% url 'detail' interested_book.book.book_code %}" class="text-decoration-none">{{ interested_book.book.title }}</a>
+                            </h5>
+                            <div class="mt-auto">
+                                <a href="{% url 'readingnote' interested_book.book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
+                                <a href="{% url 'postreading' interested_book.book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No interested books found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

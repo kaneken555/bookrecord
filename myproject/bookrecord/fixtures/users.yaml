@@ -1,0 +1,5 @@
+# bookrecord/fixtures/users.yaml
+- model: bookrecord.userinfo
+  pk: 1
+  fields:
+    password: "password123"
