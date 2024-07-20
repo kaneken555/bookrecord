@@ -1,21 +1,24 @@
-# ベースイメージ
-FROM python:3.8-slim
+# Dockerfile
 
-# 作業ディレクトリを設定
+# Pythonの公式イメージをベースにする
+FROM python:3.9-slim
+
+# 必要なビルドツールをインストールする
+RUN apt-get update && apt-get install -y gcc
+
+# 作業ディレクトリを作成する
 WORKDIR /app
 
-# 必要なパッケージをインストール
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+# 必要なパッケージをインストールする
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
-# アプリケーションコードをコピー
-COPY . /app/
+# アプリケーションコードをコピーする
+COPY . .
 
-# 環境変数を設定
-ENV PYTHONUNBUFFERED=1
+# 環境変数を設定してcollectstaticコマンドを実行
+ENV DJANGO_SETTINGS_MODULE=myproject.settings
+RUN python manage.py collectstatic --noinput
 
-# ポートを公開
-EXPOSE 8000
-
-# コンテナが起動したときに実行されるコマンド
-CMD ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Gunicornを使ってアプリケーションを起動する
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--timeout", "120", "myproject.wsgi:application"]
