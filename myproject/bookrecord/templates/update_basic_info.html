@@ -12,27 +12,27 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="id_title">タイトル</label>
-                    {{ form.title }}
+                    {{ book_form.title }}
                 </div>
                 <div class="form-group">
                     <label for="id_genre">ジャンル</label>
-                    {{ form.genre }}
+                    {{ book_form.genre }}
                 </div>
                 <div class="form-group">
                     <label for="id_cover_image">カバー画像</label>
-                    {{ form.cover_image }}
+                    {{ book_form.cover_image }}
                 </div>
                 <div class="form-group">
                     <label for="id_summary">概要</label>
-                    {{ form.summary }}
+                    {{ book_form.summary }}
                 </div>
                 <div class="form-group">
                     <label for="id_purpose">目的</label>
-                    {{ form.purpose }}
+                    {{ basic_info_form.purpose }}
                 </div>
                 <div class="form-group">
                     <label for="id_buy_reason">購入理由</label>
-                    {{ form.buy_reason }}
+                    {{ basic_info_form.buy_reason }}
                 </div>
                 <div class="form-group">
                     <label for="id_tags">タグ</label>
@@ -44,10 +44,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="id_is_finished">完了</label>
-                    {{ form.is_finished }}
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
