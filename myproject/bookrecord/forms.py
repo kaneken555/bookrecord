@@ -2,6 +2,8 @@
 
 from django import forms
 from .models import Book, Tag, Genre, BasicInfo, ReadingNote, PostReadingSummary
+from datetime import date
+
 
 class BookForm(forms.ModelForm):
     class Meta:
@@ -28,7 +30,8 @@ class BasicInfoForm(forms.ModelForm):
 
 class ReadingNoteForm(forms.ModelForm):
     registration_date = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}), 
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        initial=date.today,  # 初期値を設定
         required=True,
         label='日付'
     )
@@ -45,6 +48,7 @@ class ReadingNoteForm(forms.ModelForm):
 class PostReadingSummaryForm(forms.ModelForm):
     registration_date = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date'}),
+        initial=date.today,  # 初期値を設定
         required=True,
         label='日付'
     )

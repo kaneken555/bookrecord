@@ -128,7 +128,7 @@ def readingnote_view(request, book_id):
             reading_note = form.save(commit=False)
             reading_note.basic_info_code = book_user.book_code.basic_info_code
             reading_note.save()
-            return redirect('list')
+            return redirect('detail', book_id=book_id)
     else:
         form = ReadingNoteForm()
     return render(request, 'readingnote.html', {'form': form, 'book': book_user.book_code})
@@ -147,8 +147,7 @@ def postreading_view(request, book_id):
             basic_info = post_reading_summary.basic_info_code
             basic_info.is_finished = True
             basic_info.save()
-
-            return redirect('list')
+            return redirect('detail', book_id=book_id)
     else:
         form = PostReadingSummaryForm()
     return render(request, 'postreading.html', {'form': form, 'book': book_user.book_code})
