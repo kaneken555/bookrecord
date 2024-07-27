@@ -116,11 +116,16 @@
 .book-shelf {
     display: flex;
     flex-wrap: wrap;
+    position: relative;
 }
 
 .shelf-divider {
-    border: 1px solid #8B4513; /* 棚のような色 */
-    margin: 0;
-    height: 10px; /* 棚の厚さ */
-    background-color: #8B4513; /* 棚の色 */
+    width: 100%;
+    border: 2px solid #8B4513; /* 棚の色 */
+    margin: 20px 0;
+}
+
+.book-item {
+    flex: 0 0 calc(25% - 20px); /* 本の幅を狭めるために25%から20pxを引いた幅を設定 */
+    margin-right: 20px; /* 本の間隔を空ける */
 }

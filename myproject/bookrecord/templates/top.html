@@ -17,11 +17,14 @@
         </li>
         {% endfor %}
     </ul>
-    
+
     <div class="shelf-container">
-        <div class="row mt-3 book-shelf">
+        <div class="book-shelf">
             {% for book in unfinished_books %}
-                <div class="col-md-3 mb-4">
+                {% if forloop.counter0|divisibleby:4 and not forloop.first %}
+                    <hr class="shelf-divider">
+                {% endif %}
+                <div class="col-md-3 mb-4 book-item">
                     <div class="card h-100 book-card">
                         <a href="{% url 'detail' book.book_code %}">
                             {% if book.cover_image %}
@@ -49,8 +52,11 @@
 
     <h2 class="my-4">Other Users' Unfinished Books</h2>
     <div class="shelf-container">
-        <div class="row mt-3 book-shelf">
+        <div class="book-shelf">
             {% for book in other_books %}
+                {% if forloop.counter0|divisibleby:4 and not forloop.first %}
+                    <hr class="shelf-divider">
+                {% endif %}
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 book-card">
                         <a href="{% url 'detail' book.book_code %}">
@@ -78,3 +84,4 @@
     </div>
 </div>
 {% endblock %}
+
