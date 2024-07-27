@@ -96,3 +96,36 @@
     border: 1px solid #e3e3e3; /* 枠線を追加して視覚的にわかりやすく */
 }
 
+
+.shelf-container {
+    background-color: #D2B48C; /* 木っぽい色 */
+    padding: 20px;
+    border-radius: 10px;
+    max-height: 900px; /* 3段分の高さ */
+    overflow-y: auto;
+}
+
+.book-card {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-shelf {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.shelf-divider {
+    width: 100%;
+    border: 2px solid #8B4513; /* 棚の色 */
+    margin: 20px 0;
+}
+
+.book-item {
+    flex: 0 0 calc(25% - 20px); /* 本の幅を狭めるために25%から20pxを引いた幅を設定 */
+    margin-right: 20px; /* 本の間隔を空ける */
+}

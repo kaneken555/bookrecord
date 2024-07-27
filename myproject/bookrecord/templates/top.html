@@ -17,60 +17,71 @@
         </li>
         {% endfor %}
     </ul>
-    
-    <div class="row mt-3">
-        {% for book in unfinished_books %}
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <a href="{% url 'detail' book.book_code %}">
-                        {% if book.cover_image %}
-                            <img src="{{ book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
-                        {% else %}
-                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px; width: 100%;">
-                                No image
+
+    <div class="shelf-container">
+        <div class="book-shelf">
+            {% for book in unfinished_books %}
+                {% if forloop.counter0|divisibleby:4 and not forloop.first %}
+                    <hr class="shelf-divider">
+                {% endif %}
+                <div class="col-md-3 mb-4 book-item">
+                    <div class="card h-100 book-card">
+                        <a href="{% url 'detail' book.book_code %}">
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
+                            {% else %}
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px; width: 100%;">
+                                    No image
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
+                            </h5>
+                            <div class="mt-auto">
+                                <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
+                                <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
                             </div>
-                        {% endif %}
-                    </a>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">
-                            <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
-                        </h5>
-                        <div class="mt-auto">
-                            <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
-                            <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 
     <h2 class="my-4">Other Users' Unfinished Books</h2>
-    <div class="row mt-3">
-        {% for book in other_books %}
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <a href="{% url 'detail' book.book_code %}">
-                        {% if book.cover_image %}
-                            <img src="{{ book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
-                        {% else %}
-                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px; width: 100%;">
-                                No image
+    <div class="shelf-container">
+        <div class="book-shelf">
+            {% for book in other_books %}
+                {% if forloop.counter0|divisibleby:4 and not forloop.first %}
+                    <hr class="shelf-divider">
+                {% endif %}
+                <div class="col-md-3 mb-4 book-item">
+                    <div class="card h-100 book-card">
+                        <a href="{% url 'detail' book.book_code %}">
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
+                            {% else %}
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px; width: 100%;">
+                                    No image
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
+                            </h5>
+                            <div class="mt-auto">
+                                <a href="{% url 'register_book' book.book_code %}" class="btn btn-success btn-sm">Register</a>
+                                <a href="{% url 'add_to_interested' book.book_code %}" class="btn btn-info btn-sm">Interested</a>
                             </div>
-                        {% endif %}
-                    </a>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">
-                            <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
-                        </h5>
-                        <div class="mt-auto">
-                            <a href="{% url 'register_book' book.book_code %}" class="btn btn-success btn-sm">Register</a>
-                            <a href="{% url 'add_to_interested' book.book_code %}" class="btn btn-info btn-sm">Interested</a>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}
+

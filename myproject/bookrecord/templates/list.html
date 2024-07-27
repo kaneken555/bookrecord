@@ -17,39 +17,44 @@
         </li>
         {% endfor %}
     </ul>
-    
-    <div class="row mt-3">
-        {% for book in user_books %}
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <a href="{% url 'detail' book.book_code %}">
-                        {% if book.cover_image %}
-                            <img src="{{ book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
-                        {% else %}
-                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px; width: 100%;">
-                                No image
-                            </div>
-                        {% endif %}
-                    </a>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">
-                            <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
-                        </h5>
-                        <p class="card-text">
-                            {% if book.basic_info_code.is_finished %}
-                                <span class="badge badge-success">Finished</span>
+
+    <div class="shelf-container" style="max-height: none;">
+        <div class="book-shelf">
+            {% for book in user_books %}
+                <div class="book-item">
+                    <div class="book-card">
+                        <a href="{% url 'detail' book.book_code %}">
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
                             {% else %}
-                                <span class="badge badge-warning">Unfinished</span>
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px; width: 100%;">
+                                    No image
+                                </div>
                             {% endif %}
-                        </p>
-                        <div class="mt-auto">
-                            <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
-                            <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
+                            </h5>
+                            <p class="card-text">
+                                {% if book.basic_info_code.is_finished %}
+                                    <span class="badge badge-success">Finished</span>
+                                {% else %}
+                                    <span class="badge badge-warning">Unfinished</span>
+                                {% endif %}
+                            </p>
+                            <div class="mt-auto">
+                                <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
+                                <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+                {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                    <div class="shelf-divider"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}
