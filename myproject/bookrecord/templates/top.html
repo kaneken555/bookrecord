@@ -19,8 +19,9 @@
     </ul>
     
     <div class="shelf-container">
-        <div class="row mt-3">
-            {% for book in unfinished_books %}
+        {% for i in "012" %}
+        <div class="row mt-3 book-shelf">
+            {% for book in unfinished_books|slice:":4" %}
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 book-card">
                         <a href="{% url 'detail' book.book_code %}">
@@ -45,12 +46,15 @@
                 </div>
             {% endfor %}
         </div>
+        <hr class="shelf-divider">
+        {% endfor %}
     </div>
 
     <h2 class="my-4">Other Users' Unfinished Books</h2>
     <div class="shelf-container">
-        <div class="row mt-3">
-            {% for book in other_books %}
+        {% for i in "012" %}
+        <div class="row mt-3 book-shelf">
+            {% for book in other_books|slice:":4" %}
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 book-card">
                         <a href="{% url 'detail' book.book_code %}">
@@ -75,6 +79,9 @@
                 </div>
             {% endfor %}
         </div>
+        <hr class="shelf-divider">
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
+
