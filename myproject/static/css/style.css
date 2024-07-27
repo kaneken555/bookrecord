@@ -96,3 +96,17 @@
     border: 1px solid #e3e3e3; /* 枠線を追加して視覚的にわかりやすく */
 }
 
+
+.shelf-container {
+    background-color: #D2B48C; /* 木っぽい色 */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.book-card {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
