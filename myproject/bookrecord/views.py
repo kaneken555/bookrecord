@@ -22,7 +22,7 @@ def top_view(request):
 
     # 未完了の本を取得
     unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
-    other_books = [book_user.book_code for book_user in other_book_users if not book_user.basic_info_code.is_finished]
+    other_books = [book_user.book_code for book_user in other_book_users]
 
     return render(request, 'top.html', {
         'unfinished_books': unfinished_books,
@@ -263,6 +263,11 @@ def add_to_interested(request, book_id):
     return redirect('top')
 
 @login_required
-def interested_list(request):
+def interested_list_view(request):
     interested_books = InterestedBook.objects.filter(user=request.user)
-    return render(request, 'interested_list.html', {'interested_books': interested_books})
+    user_books = BookUser.objects.filter(user_id=request.user).values_list('book_code', flat=True)
+    
+    return render(request, 'interested_list.html', {
+        'interested_books': interested_books,
+        'user_books': user_books,
+    })
