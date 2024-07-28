@@ -22,7 +22,7 @@ def top_view(request):
 
     # 未完了の本を取得
     unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
-    other_books = [book_user.book_code for book_user in other_book_users if not book_user.basic_info_code.is_finished]
+    other_books = [book_user.book_code for book_user in other_book_users]
 
     return render(request, 'top.html', {
         'unfinished_books': unfinished_books,
