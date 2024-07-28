@@ -25,8 +25,10 @@
                                 <a href="{% url 'detail' interested_book.book.book_code %}" class="text-decoration-none">{{ interested_book.book.title }}</a>
                             </h5>
                             <div class="mt-auto">
-                                <a href="{% url 'readingnote' interested_book.book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
-                                <a href="{% url 'postreading' interested_book.book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
+                                {% if interested_book.book.book_code in user_books %}
+                                    <a href="{% url 'readingnote' interested_book.book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
+                                    <a href="{% url 'postreading' interested_book.book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

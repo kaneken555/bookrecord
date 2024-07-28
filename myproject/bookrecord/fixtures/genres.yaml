@@ -14,3 +14,7 @@
   fields:
     genre_name: Genre C
 
+- model: bookrecord.genre
+  pk: 4
+  fields:
+    genre_name: Genre D
