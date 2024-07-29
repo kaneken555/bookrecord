@@ -10,6 +10,9 @@ services:
       - media_volume:/app/media
     expose:
       - "8000"
+    depends_on:
+      - db
+
 
   nginx:
     image: nginx:latest
@@ -22,6 +25,16 @@ services:
       - media_volume:/app/media
     depends_on:
       - web
+
+  db:
+    image: mysql:8.3
+    environment:
+      MYSQL_DATABASE: my_django_db
+      MYSQL_USER: django_user
+      MYSQL_PASSWORD: mysql_pass
+      MYSQL_ROOT_PASSWORD: root_pass  
+    ports:
+      - "3306:3306"
 
 volumes:
   static_volume:

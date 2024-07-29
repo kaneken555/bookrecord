@@ -4,7 +4,7 @@
 FROM python:3.9-slim
 
 # 必要なビルドツールをインストールする
-RUN apt-get update && apt-get install -y gcc
+RUN apt-get update && apt-get install -y default-libmysqlclient-dev gcc pkg-config
 
 # 作業ディレクトリを作成する
 WORKDIR /app
