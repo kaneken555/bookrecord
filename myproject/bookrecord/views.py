@@ -231,7 +231,9 @@ def search_view(request):
             Q(basic_info_code__purpose__icontains=query) |
             Q(basic_info_code__buy_reason__icontains=query)
         )
-    return render(request, 'search_results.html', {'books': books, 'query': query})
+    user_books = BookUser.objects.filter(user_id=request.user).values_list('book_code', flat=True)
+
+    return render(request, 'search_results.html', {'books': books, 'query': query, 'user_books': user_books})
 
 @login_required
 def register_book(request, book_id):
