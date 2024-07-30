@@ -24,7 +24,7 @@
     
     <div id="main">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">My Project</a>
+            <a class="navbar-brand" href="#">BookRecrod</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -54,22 +54,22 @@
                         </div>
                     </div>
                 </form>
-                <ul class="navbar-nav ml-auto">
-                    {% if user.is_authenticated %}
-                        <a class="btn btn-outline-danger ml-2" href="{% url 'logout' %}">Logout</a>
-                        <div class="ml-2 navbar-text">
-                            {{ request.user.username }}
-                        </div>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
-                        </li>
-                    {% endif %}
-                </ul>
             </div>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <a class="btn btn-outline-danger ml-4" href="{% url 'logout' %}">Logout</a>
+                    <div class="navbar-text" style="padding-left: 10px; padding-right: 10px;">
+                        {{ request.user.username }}
+                    </div>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                    </li>
+                {% endif %}
+            </ul>
         </nav>
         {% block content %}{% endblock %}
     </div>
