@@ -43,7 +43,7 @@
                         <strong>Impression:</strong> {{ note.impression }}<br>
                         <strong>Learning:</strong> {{ note.learning }}<br>
                         {% if basic_info.registrant == user.username %}
-                        <a href="{% url 'update_reading_note' note.note_id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'update_reading_note' note.note_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
                         <a href="{% url 'delete_reading_note' note.note_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
                         {% endif %}
                     </li>
@@ -62,7 +62,7 @@
                         <strong>Learning:</strong> {{ summary.learning }}<br>
                         <strong>Satisfaction Level:</strong> {{ summary.satisfaction_level }}<br>
                         {% if summary.basic_info_code.registrant == user.username %}
-                            <a href="{% url 'update_post_reading_summary' summary.summary_id %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'update_post_reading_summary' summary.summary_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
                             <a href="{% url 'delete_post_reading_summary' summary.summary_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
                         {% endif %}
                     </li>
