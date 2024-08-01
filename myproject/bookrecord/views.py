@@ -111,10 +111,13 @@ def list_view(request):
     else:
         user_book_users = BookUser.objects.filter(user_id=request.user, book_code__genre__genre_id=selected_genre)
 
-    user_books = [book_user.book_code for book_user in user_book_users]
+    # FinishedとUnfinishedの本を分けてリスト化
+    finished_books = [book_user.book_code for book_user in user_book_users if book_user.basic_info_code.is_finished]
+    unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
 
     return render(request, 'list.html', {
-        'user_books': user_books,
+        'finished_books': finished_books,
+        'unfinished_books': unfinished_books,
         'genres': genres,
         'selected_genre': selected_genre
     })

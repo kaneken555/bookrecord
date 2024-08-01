@@ -18,11 +18,13 @@
         {% endfor %}
     </ul>
 
+    <!-- 未完了の本 -->
+    <h3 class="my-4">Unfinished Books</h3>
     <div class="shelf-container" style="max-height: none;">
         <div class="book-shelf">
-            {% for book in user_books %}
+            {% for book in unfinished_books %}
                 <div class="book-item">
-                    <div class="book-card">
+                    <div class="card h-100 book-card">
                         <a href="{% url 'detail' book.book_code %}">
                             {% if book.cover_image %}
                                 <img src="{{ book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
@@ -36,13 +38,40 @@
                             <h5 class="card-title">
                                 <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
                             </h5>
-                            <p class="card-text">
-                                {% if book.basic_info_code.is_finished %}
-                                    <span class="badge badge-success">Finished</span>
-                                {% else %}
-                                    <span class="badge badge-warning">Unfinished</span>
-                                {% endif %}
-                            </p>
+                            <div class="mt-auto">
+                                <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
+                                <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                    <div class="shelf-divider"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 完了した本 -->
+    <h3 class="my-4">Finished Books</h3>
+    <div class="shelf-container" style="max-height: none;">
+        <div class="book-shelf">
+            {% for book in finished_books %}
+                <div class="book-item">
+                    <div class="card h-100 book-card">
+                        <a href="{% url 'detail' book.book_code %}">
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}" class="card-img-top img-fluid" alt="{{ book.title }}" style="height: 200px; width: 100%; object-fit: cover;">
+                            {% else %}
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px; width: 100%;">
+                                    No image
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
+                            </h5>
                             <div class="mt-auto">
                                 <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
                                 <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
