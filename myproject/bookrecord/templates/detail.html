@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="container">
-    <h2>Details for {{ book.title }}</h2>
+    <h2 class="my-4">Details for {{ book.title }}</h2>
 
     <div class="row">
         <div class="col-md-4">
@@ -18,62 +18,80 @@
             {% endif %}
         </div>
         <div class="col-md-8">
-            <h3>Basic Information</h3>
-            <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>Registrant:</strong> {{ basic_info.registrant }}<br>
-                        <strong>Registration Date:</strong> {{ basic_info.registration_date }}<br>
-                        <strong>Purpose:</strong> {{ basic_info.purpose }}<br>
-                        <strong>Buy Reason:</strong> {{ basic_info.buy_reason }}<br>
-                        <strong>Is Finished:</strong> {{ basic_info.is_finished }}
-                    </div>
-                    {% if basic_info.registrant == user.username %}
-                        <a href="{% url 'update_basic_info' basic_info.basic_info_code %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete_basic_info' basic_info.basic_info_code %}" class="btn btn-danger btn-sm ml-2">Delete Basic Info and All Related Records</a>
-                    {% endif %}
-                </li>
-            </ul>
+            <!-- Summary Section -->
+            <div class="mb-4"> <!-- 余白を追加 -->
+                <h3>Summary</h3>
+                <div class="list-group-item">
+                    {{ book.summary }}
+                </div>
+            </div>
 
-            <h3>Reading Notes</h3>
-            <ul class="list-group">
-                {% for note in reading_notes %}
-                    <li class="list-group-item">
-                        <strong>Date:</strong> {{ note.registration_date }}<br>
-                        <strong>Impression:</strong> {{ note.impression }}<br>
-                        <strong>Learning:</strong> {{ note.learning }}<br>
+            <!-- Basic Information Section -->
+            <div class="mb-4"> <!-- 余白を追加 -->
+                <h3>Basic Information</h3>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Registrant:</strong> {{ basic_info.registrant }}<br>
+                            <strong>Registration Date:</strong> {{ basic_info.registration_date }}<br>
+                            <strong>Purpose:</strong> {{ basic_info.purpose }}<br>
+                            <strong>Buy Reason:</strong> {{ basic_info.buy_reason }}<br>
+                            <strong>Is Finished:</strong> {{ basic_info.is_finished }}
+                        </div>
                         {% if basic_info.registrant == user.username %}
-                        <a href="{% url 'update_reading_note' note.note_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
-                        <a href="{% url 'delete_reading_note' note.note_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                            <a href="{% url 'update_basic_info' basic_info.basic_info_code %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'delete_basic_info' basic_info.basic_info_code %}" class="btn btn-danger btn-sm ml-2">Delete Basic Info and All Related Records</a>
                         {% endif %}
                     </li>
-                {% endfor %}
-            </ul>
-            {% if basic_info.registrant == user.username %}
-                <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Reading Note</a>
-            {% endif %}
+                </ul>
+            </div>
 
-            <h3>Post Reading Summaries</h3>
-            <ul class="list-group">
-                {% for summary in post_reading_summaries %}
-                    <li class="list-group-item">
-                        <strong>Date:</strong> {{ summary.registration_date }}<br>
-                        <strong>Impression:</strong> {{ summary.impression }}<br>
-                        <strong>Learning:</strong> {{ summary.learning }}<br>
-                        <strong>Satisfaction Level:</strong> {{ summary.satisfaction_level }}<br>
-                        {% if summary.basic_info_code.registrant == user.username %}
-                            <a href="{% url 'update_post_reading_summary' summary.summary_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
-                            <a href="{% url 'delete_post_reading_summary' summary.summary_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-            {% if basic_info.registrant == user.username %}
-                <a href="{% url 'postreading' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Post Reading Summary</a>
-            {% endif %}
+            <!-- Reading Notes Section -->
+            <div class="mb-4"> <!-- 余白を追加 -->
+                <h3>Reading Notes</h3>
+                <ul class="list-group">
+                    {% for note in reading_notes %}
+                        <li class="list-group-item">
+                            <strong>Date:</strong> {{ note.registration_date }}<br>
+                            <strong>Impression:</strong> {{ note.impression }}<br>
+                            <strong>Learning:</strong> {{ note.learning }}<br>
+                            {% if basic_info.registrant == user.username %}
+                                <a href="{% url 'update_reading_note' note.note_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
+                                <a href="{% url 'delete_reading_note' note.note_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if basic_info.registrant == user.username %}
+                    <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Reading Note</a>
+                {% endif %}
+            </div>
+
+            <!-- Post Reading Summaries Section -->
+            <div class="mb-4"> <!-- 余白を追加 -->
+                <h3>Post Reading Summaries</h3>
+                <ul class="list-group">
+                    {% for summary in post_reading_summaries %}
+                        <li class="list-group-item">
+                            <strong>Date:</strong> {{ summary.registration_date }}<br>
+                            <strong>Impression:</strong> {{ summary.impression }}<br>
+                            <strong>Learning:</strong> {{ summary.learning }}<br>
+                            <strong>Satisfaction Level:</strong> {{ summary.satisfaction_level }}<br>
+                            {% if summary.basic_info_code.registrant == user.username %}
+                                <a href="{% url 'update_post_reading_summary' summary.summary_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
+                                <a href="{% url 'delete_post_reading_summary' summary.summary_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if basic_info.registrant == user.username %}
+                    <a href="{% url 'postreading' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Post Reading Summary</a>
+                {% endif %}
+            </div>
 
             <a href="{% url 'list' %}" class="btn btn-secondary mt-3">Back to list</a>
         </div>
     </div>
 </div>
 {% endblock %}
+
