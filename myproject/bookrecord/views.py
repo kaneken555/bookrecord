@@ -287,7 +287,6 @@ def search_books(request):
     if not title:
         return JsonResponse({'error': 'Title parameter is required.'}, status=400)
 
-    # api_key = 'AIzaSyABzjP_bWjPFWhNnKLQP3oRWJnnElg6sdQ'  # ここにAPIキーを設定
     api_key = os.environ.get('GOOGLE_BOOKS_API_KEY')  # 環境変数からAPIキーを取得
 
     url = f'https://www.googleapis.com/books/v1/volumes?q=intitle:{title}&key={api_key}'
