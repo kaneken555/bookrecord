@@ -24,7 +24,9 @@
     
     <div id="main">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">BookRecrod</a>
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'image/icon.png' %}" width="30" height="30" class="d-inline-block align-top" alt="icon">
+                BookRecrod</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -41,6 +43,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'new' %}">New Book</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class='nav-link' href="{% url 'interested_list' %}">Interested List</a>
                     </li>
                 </ul>
                 <button class="openbtn btn btn-secondary ml-auto" onclick="openNav()">☰</button>
