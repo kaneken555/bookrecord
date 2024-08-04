@@ -1,12 +1,16 @@
 # bookrecord/views.py
 
+import os
+import requests
+
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookForm, BasicInfoForm, ReadingNoteForm, PostReadingSummaryForm
 from .models import BookUser, ReadingNote, PostReadingSummary, BasicInfo, Book, Genre, Tag, BasicInfoTag, InterestedBook
 from django.db.models import Q  # 追加
 
 from django.contrib.auth.decorators import login_required
-
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
 
 @login_required
 def top_view(request):
@@ -276,3 +280,21 @@ def interested_list_view(request):
         'interested_books': interested_books,
         'user_books': user_books,
     })
+
+@require_GET
+def search_books(request):
+    title = request.GET.get('title', '')
+    if not title:
+        return JsonResponse({'error': 'Title parameter is required.'}, status=400)
+
+    # api_key = 'AIzaSyABzjP_bWjPFWhNnKLQP3oRWJnnElg6sdQ'  # ここにAPIキーを設定
+    api_key = os.environ.get('GOOGLE_BOOKS_API_KEY')  # 環境変数からAPIキーを取得
+
+    url = f'https://www.googleapis.com/books/v1/volumes?q=intitle:{title}&key={api_key}'
+
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return JsonResponse(data)
+    else:
+        return JsonResponse({'error': 'Failed to fetch data from Google Books API.'}, status=response.status_code)
