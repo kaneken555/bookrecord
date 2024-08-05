@@ -80,6 +80,24 @@
             </ul>
         </nav>
         {% block content %}{% endblock %}
+
+
+        <!-- フッター -->
+        <footer class="footer bg-light mt-5">
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <span class="text-muted">&copy; 2024 BookRecord</span>
+                    </div>
+                    <div class="col-md-6 text-md-right">
+                        <a href="#" class="text-muted mx-2">Privacy Policy</a>
+                        <a href="#" class="text-muted mx-2">Terms of Service</a>
+                        <a href="#" class="text-muted mx-2">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
     </div>
     <script src="{% static 'js/jquery-3.7.1.slim.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
