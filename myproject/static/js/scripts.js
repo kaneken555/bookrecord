@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("searchButton");
     const searchResultsModal = new bootstrap.Modal(document.getElementById("searchResultsModal"));
     const searchResultsContainer = document.getElementById("searchResults");
+    const coverImageInput = document.getElementById("cover-image-url"); // カバー画像のURLを格納するhidden input
+    const coverPreviewImg = document.getElementById("cover-preview-img"); // プレビュー画像の要素
 
     searchButton.addEventListener("click", function () {
         const titleInput = document.getElementById("id_title");
@@ -81,6 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <p><strong>著者:</strong> ${authors} <button class="btn btn-link btn-sm copy-button" data-copy="${authors}">コピー</button><span class="copy-message" style="display: none;"></span></p>
                             <p><strong>出版社:</strong> ${publisher} <button class="btn btn-link btn-sm copy-button" data-copy="${publisher}">コピー</button><span class="copy-message" style="display: none;"></span></p>
                             <p><strong>概要:</strong> ${description} <button class="btn btn-link btn-sm copy-button" data-copy="${description}">コピー</button><span class="copy-message" style="display: none;"></span></p>
+                            <button class="btn btn-outline-secondary btn-sm select-thumbnail" data-thumbnail="${thumbnail}">カバー画像に設定</button>
                         </div>
                     </div>
                     <hr>
@@ -107,5 +110,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
         });
+
+        // サムネイル画像をカバー画像に設定するボタンにイベントリスナーを追加
+        document.querySelectorAll('.select-thumbnail').forEach(button => {
+            button.addEventListener('click', function () {
+                const thumbnailUrl = this.getAttribute('data-thumbnail');
+                coverImageInput.value = thumbnailUrl; // カバー画像のhidden inputにURLを設定
+                coverPreviewImg.src = thumbnailUrl;  // プレビュー画像のソースを設定
+                coverPreviewImg.style.display = 'block';  // プレビュー画像を表示
+            });
+        });
     }
 });
+

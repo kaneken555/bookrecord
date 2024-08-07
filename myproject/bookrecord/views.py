@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 
+from urllib.request import urlopen
+from django.core.files.base import ContentFile
+
 @login_required
 def top_view(request):
     genres = {genre.genre_id: genre.genre_name for genre in Genre.objects.all()}
@@ -43,6 +46,8 @@ def new(request):
         book_form = BookForm(request.POST, request.FILES)
         basic_info_form = BasicInfoForm(request.POST)
         tag_names = request.POST.getlist('tags')
+        cover_image_url = request.POST.get('cover-image-url')  # カバー画像URL
+
         
         print("Book Form Valid:", book_form.is_valid())
         print("Basic Info Form Valid:", basic_info_form.is_valid())
@@ -54,8 +59,17 @@ def new(request):
             basic_info.registrant = request.user.username
             basic_info.save()
             book.basic_info_code = basic_info
-            book.save()
 
+            # カバー画像URLがある場合、画像をダウンロードして保存
+            if cover_image_url:
+                response = urlopen(cover_image_url)
+                book.cover_image.save(
+                    os.path.basename(cover_image_url),
+                    ContentFile(response.read())
+                )
+
+            book.save()
+            
             # BookUserに新しいレコードを追加
             new_book_user = BookUser.objects.create(
                 book_code=book,

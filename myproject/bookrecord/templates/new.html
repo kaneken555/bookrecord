@@ -41,6 +41,10 @@
                             <div class="form-group">
                                 <label for="id_cover_image">カバー画像</label>
                                 {{ book_form.cover_image }}
+                                <input type="hidden" id="cover-image-url" name="cover-image-url">
+                                <div id="cover-image-preview" style="margin-top: 10px;">
+                                    <img id="cover-preview-img" src="#" alt="Selected Cover Image" style="display: none; max-width: 100%; height: auto;" />
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
