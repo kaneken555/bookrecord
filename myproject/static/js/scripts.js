@@ -77,10 +77,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="d-flex">
                         <img src="${thumbnail}" alt="${title}" class="img-thumbnail me-3" style="width: 128px; height: 192px;">
                         <div>
-                            <h5>${title}</h5>
-                            <p><strong>著者:</strong> ${authors}</p>
-                            <p><strong>出版社:</strong> ${publisher}</p>
-                            <p><strong>概要:</strong> ${description}</p>
+                            <h5>${title} <button class="btn btn-link btn-sm copy-button" data-copy="${title}">コピー</button><span class="copy-message" style="display: none;"></span></h5>
+                            <p><strong>著者:</strong> ${authors} <button class="btn btn-link btn-sm copy-button" data-copy="${authors}">コピー</button><span class="copy-message" style="display: none;"></span></p>
+                            <p><strong>出版社:</strong> ${publisher} <button class="btn btn-link btn-sm copy-button" data-copy="${publisher}">コピー</button><span class="copy-message" style="display: none;"></span></p>
+                            <p><strong>概要:</strong> ${description} <button class="btn btn-link btn-sm copy-button" data-copy="${description}">コピー</button><span class="copy-message" style="display: none;"></span></p>
                         </div>
                     </div>
                     <hr>
@@ -88,7 +88,24 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
             searchResultsContainer.innerHTML += bookInfo;
         });
+
+        // すべてのコピー ボタンにイベント リスナーを追加
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const textToCopy = this.getAttribute('data-copy');
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const messageSpan = this.nextElementSibling;
+                    messageSpan.textContent = 'コピーしました!';
+                    messageSpan.style.display = 'inline-block';
+
+                    // メッセージを2秒後に消去
+                    setTimeout(() => {
+                        messageSpan.style.display = 'none';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('コピーに失敗しました', err);
+                });
+            });
+        });
     }
 });
-
-
