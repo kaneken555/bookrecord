@@ -25,7 +25,8 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('bookrecord.urls')),
-    path('accounts/', include('accounts.urls')),  # Add this line
+    path('myaccounts/', include('accounts.urls')),  # Add this line
+    path('accounts/', include('allauth.urls')),
 
 ]
 
