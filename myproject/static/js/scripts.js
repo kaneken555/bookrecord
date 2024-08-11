@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchResultsContainer = document.getElementById("searchResults");
     const coverImageInput = document.getElementById("cover-image-url"); // カバー画像のURLを格納するhidden input
     const coverPreviewImg = document.getElementById("cover-preview-img"); // プレビュー画像の要素
+    const summaryInput = document.getElementById("id_summary"); // 概要の入力フィールドを取得
 
     searchButton.addEventListener("click", function () {
         const titleInput = document.getElementById("id_title");
@@ -83,6 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             <p><strong>著者:</strong> ${authors} <button class="btn btn-link btn-sm copy-button" data-copy="${authors}">コピー</button><span class="copy-message" style="display: none;"></span></p>
                             <p><strong>出版社:</strong> ${publisher} <button class="btn btn-link btn-sm copy-button" data-copy="${publisher}">コピー</button><span class="copy-message" style="display: none;"></span></p>
                             <p><strong>概要:</strong> ${description} <button class="btn btn-link btn-sm copy-button" data-copy="${description}">コピー</button><span class="copy-message" style="display: none;"></span></p>
+                            <button class="btn btn-success btn-sm register-button" data-description="${description}">登録</button>
+
                             <button class="btn btn-outline-secondary btn-sm select-thumbnail" data-thumbnail="${thumbnail}">カバー画像に設定</button>
                         </div>
                     </div>
@@ -108,6 +111,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }).catch(err => {
                     console.error('コピーに失敗しました', err);
                 });
+            });
+        });
+
+        // すべての登録 ボタンにイベント リスナーを追加
+        document.querySelectorAll('.register-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const descriptionToCopy = this.getAttribute('data-description');
+                summaryInput.value = descriptionToCopy; // 概要を登録
+                // searchResultsModal.hide(); // モーダルを閉じる
             });
         });
 
