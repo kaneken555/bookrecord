@@ -14,7 +14,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="id_title">タイトル</label>
-                                {{ book_form.title }}
+                                <div class="input-group">
+                                    {{ book_form.title }}
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                                            <i class="fas fa-search"></i> 検索
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="id_genre">ジャンル</label>
@@ -34,6 +41,10 @@
                             <div class="form-group">
                                 <label for="id_cover_image">カバー画像</label>
                                 {{ book_form.cover_image }}
+                                <input type="hidden" id="cover-image-url" name="cover-image-url">
+                                <div id="cover-image-preview" style="margin-top: 10px;">
+                                    <img id="cover-preview-img" src="#" alt="Selected Cover Image" style="display: none; max-width: 100%; height: auto;" />
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -57,4 +68,25 @@
         </div>
     </div>
 </div>
+
+<!-- モーダルウィンドウ -->
+<div class="modal fade" id="searchResultsModal" tabindex="-1" role="dialog" aria-labelledby="searchResultsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="searchResultsModalLabel">検索結果</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="searchResults">
+          <!-- 検索結果をここに表示 -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}

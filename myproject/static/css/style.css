@@ -129,3 +129,16 @@
     flex: 0 0 calc(25% - 20px); /* 本の幅を狭めるために25%から20pxを引いた幅を設定 */
     margin-right: 20px; /* 本の間隔を空ける */
 }
+
+
+.copy-message {
+    display: inline-block;
+    margin-left: 10px; /* ボタンとの間にスペースを追加 */
+    padding: 3px 8px;
+    border: 1px solid #28a745;
+    border-radius: 4px;
+    background-color: #eaffea;
+    color: #28a745;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
