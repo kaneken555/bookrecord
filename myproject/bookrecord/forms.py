@@ -8,13 +8,16 @@ from datetime import date
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'genre', 'cover_image', 'summary']
+        fields = ['title', 'genre', 'cover_image', 'summary', 'author', 'publisher']
         labels = {
             'title': 'タイトル',
             'genre': 'ジャンル',
             'cover_image': 'カバー画像',
-            'summary': '概要'
+            'summary': '概要',
+            'author': '著者',
+            'publisher': '出版社'
         }
+
 class BasicInfoForm(forms.ModelForm):
     class Meta:
         model = BasicInfo
@@ -24,7 +27,7 @@ class BasicInfoForm(forms.ModelForm):
             'buy_reason': '購入のきっかけ',
         }
         widgets = {
-            'purpose': forms.Textarea(attrs={'rows': 4}),  # 高さを4行に設定
+            'purpose': forms.Textarea(attrs={'rows': 2}),  # 高さを4行に設定
             'buy_reason': forms.Textarea(attrs={'rows': 2}),  # 高さを2行に設定
         }
 
