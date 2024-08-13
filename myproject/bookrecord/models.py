@@ -28,8 +28,8 @@ class BasicInfo(models.Model):
     registrant = models.CharField(max_length=100)
     registration_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
-    purpose = models.TextField()
-    buy_reason = models.TextField(null=True, blank=True)  # nullを許可
+    purpose = models.TextField(null=True, blank=True)  # null=Trueを追加
+    buy_reason = models.TextField(null=True, blank=True)  # null=Trueを追加
     is_finished = models.BooleanField(default=False)
 
     def __str__(self):
@@ -42,6 +42,8 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
     summary = models.TextField()
+    author = models.CharField(max_length=255, null=True, blank=True)  # 著者フィールドを追加
+    publisher = models.CharField(max_length=255, null=True, blank=True)  # 出版者フィールドを追加
     registrant = models.CharField(max_length=100)
     delete_flag = models.BooleanField(default=False)
     cover_image = models.ImageField(upload_to='book_covers/', null=True, blank=True)
