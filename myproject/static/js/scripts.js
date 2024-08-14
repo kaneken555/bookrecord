@@ -35,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchResultsContainer = document.getElementById("searchResults");
     const coverImageInput = document.getElementById("cover-image-url"); // カバー画像のURLを格納するhidden input
     const coverPreviewImg = document.getElementById("cover-preview-img"); // プレビュー画像の要素
+    const titleInput = document.getElementById("id_title"); // タイトルの入力フィールドを取得
+    const authorInput = document.getElementById("id_author"); // 著者の入力フィールドを取得
+    const publisherInput = document.getElementById("id_publisher"); // 出版社の入力フィールドを取得
     const summaryInput = document.getElementById("id_summary"); // 概要の入力フィールドを取得
 
     searchButton.addEventListener("click", function () {
@@ -84,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <p><strong>著者:</strong> ${authors} <button class="btn btn-link btn-sm copy-button" data-copy="${authors}">コピー</button><span class="copy-message" style="display: none;"></span></p>
                             <p><strong>出版社:</strong> ${publisher} <button class="btn btn-link btn-sm copy-button" data-copy="${publisher}">コピー</button><span class="copy-message" style="display: none;"></span></p>
                             <p><strong>概要:</strong> ${description} <button class="btn btn-link btn-sm copy-button" data-copy="${description}">コピー</button><span class="copy-message" style="display: none;"></span></p>
-                            <button class="btn btn-success btn-sm register-button" data-description="${description}">登録</button>
+                            <button class="btn btn-success btn-sm register-button" data-title="${title}" data-authors="${authors}" data-publisher="${publisher}" data-description="${description}">登録</button>
 
                             <button class="btn btn-outline-secondary btn-sm select-thumbnail" data-thumbnail="${thumbnail}">カバー画像に設定</button>
                         </div>
@@ -117,7 +120,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // すべての登録 ボタンにイベント リスナーを追加
         document.querySelectorAll('.register-button').forEach(button => {
             button.addEventListener('click', function () {
+                const titleToCopy = this.getAttribute('data-title');
+                const authorsToCopy = this.getAttribute('data-authors');
+                const publisherToCopy = this.getAttribute('data-publisher');
                 const descriptionToCopy = this.getAttribute('data-description');
+                titleInput.value = titleToCopy; // タイトルを登録
+                authorInput.value = authorsToCopy; // 著者を登録
+                publisherInput.value = publisherToCopy; // 出版社を登録
                 summaryInput.value = descriptionToCopy; // 概要を登録
                 // searchResultsModal.hide(); // モーダルを閉じる
             });
