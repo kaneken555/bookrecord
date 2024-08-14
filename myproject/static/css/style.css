@@ -151,6 +151,6 @@
 }
 
 .custom-container {
-    padding-left: 40px;  /* 左の余白を増やす */
-    padding-right: 40px; /* 右の余白を増やす */
+    padding-left: 100px;  /* 左の余白を増やす */
+    padding-right: 100px; /* 右の余白を増やす */
 }
