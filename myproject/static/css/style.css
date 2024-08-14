@@ -1,4 +1,4 @@
-/* static/css/custom.css */
+/* static/css/style.css */
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
@@ -126,8 +126,8 @@
 }
 
 .book-item {
-    flex: 0 0 calc(25% - 20px); /* 本の幅を狭めるために25%から20pxを引いた幅を設定 */
-    margin-right: 20px; /* 本の間隔を空ける */
+    flex: 0 0 calc(20% - 15px); /* 幅を20%に設定し、10pxの間隔を引く */
+    margin-right: 15px; /* 本の間隔を空ける */
 }
 
 
@@ -141,4 +141,16 @@
     color: #28a745;
     font-weight: bold;
     font-size: 0.9rem;
+}
+
+.book-title {
+    font-size: 1.0rem; /* タイトルのフォントサイズを小さく設定 */
+    font-weight: bold;   /* タイトルを強調 */
+    margin-bottom: 0.5rem; /* タイトルと下の要素との間にスペースを追加 */
+    line-height: 1.2; /* タイトルの行間を調整 */
+}
+
+.custom-container {
+    padding-left: 100px;  /* 左の余白を増やす */
+    padding-right: 100px; /* 右の余白を増やす */
 }
