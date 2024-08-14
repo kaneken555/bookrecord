@@ -1,4 +1,4 @@
-/* static/css/custom.css */
+/* static/css/style.css */
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
@@ -148,4 +148,9 @@
     font-weight: bold;   /* タイトルを強調 */
     margin-bottom: 0.5rem; /* タイトルと下の要素との間にスペースを追加 */
     line-height: 1.2; /* タイトルの行間を調整 */
+}
+
+.custom-container {
+    padding-left: 40px;  /* 左の余白を増やす */
+    padding-right: 40px; /* 右の余白を増やす */
 }
