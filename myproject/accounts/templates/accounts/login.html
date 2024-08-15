@@ -1,12 +1,39 @@
 <!-- templates/accounts/login.html -->
 {% extends 'base.html' %}
 
+{% load socialaccount %}
+{% providers_media_js %}
+
 {% block content %}
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
-<p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Login</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                    <p class="text-center mt-3">Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+                </div>
+            </div>
+
+            <!-- ソーシャルログインボタン -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Or login with:</h3>
+                    <ul class="list-inline text-center">
+                        {% for provider in socialaccount_providers %}
+                            <li class="list-inline-item">
+                                <a class="btn btn-outline-dark" href="{% provider_login_url provider.id %}">{{ provider.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
