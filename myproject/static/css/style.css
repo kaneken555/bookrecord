@@ -154,3 +154,41 @@
     padding-left: 100px;  /* 左の余白を増やす */
     padding-right: 100px; /* 右の余白を増やす */
 }
+
+/* 1024px以下のスタイル（タブレット用） */
+@media screen and (max-width: 1024px) {
+    .book-item {
+        flex: 0 0 calc(33.33% - 10px); /* 3列に変更 */
+        margin-right: 10px; /* 間隔を少し狭める */
+    }
+
+    .custom-container {
+        padding-left: 50px; /* 左右の余白を少し減らす */
+        padding-right: 50px;
+    }
+
+    .sidebar {
+        padding-top: 40px; /* サイドバーのパディングを少し減らす */
+    }
+
+    .book-title {
+        font-size: 0.8rem; /* タイトルのフォントサイズをさらに小さく */
+    }
+}
+
+/* 600px以下のスタイル（スマートフォン用） */
+@media screen and (max-width: 600px) {
+    .book-item {
+        flex: 0 0 calc(50% - 10px); /* 2列に変更 */
+        margin-right: 10px; /* 間隔をさらに狭める */
+    }
+
+    .custom-container {
+        padding-left: 20px; /* 左右の余白をさらに減らす */
+        padding-right: 20px;
+    }
+
+    .book-title {
+        font-size: 0.7rem; /* タイトルのフォントサイズをさらに小さく */
+    }
+}
