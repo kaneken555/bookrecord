@@ -155,6 +155,19 @@
     padding-right: 100px; /* 右の余白を増やす */
 }
 
+/* ボタンとジャンル文字の共通スタイル */
+.btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.nav-tabs .nav-link {
+    font-size: 1rem; /* ジャンルの文字サイズを設定 */
+    padding: 0.5rem 1rem;
+}
+
 /* 1024px以下のスタイル（タブレット用） */
 @media screen and (max-width: 1024px) {
     .book-item {
@@ -174,6 +187,20 @@
     .book-title {
         font-size: 0.8rem; /* タイトルのフォントサイズをさらに小さく */
     }
+    .btn-sm {
+        padding: 0.35rem 0.7rem; /* ボタンのパディングを小さく */
+        font-size: 0.8rem; /* ボタンのフォントサイズを小さく */
+    }
+
+    .nav-tabs .nav-link {
+        font-size: 0.8rem; /* ジャンルの文字サイズを小さく */
+        padding: 0.4rem 0.8rem;
+    }
+
+    /* 見出しのサイズ */
+    h2.my-4 {
+        font-size: 1.5rem; /* 見出しを少し小さく */
+    }
 }
 
 /* 600px以下のスタイル（スマートフォン用） */
@@ -190,5 +217,20 @@
 
     .book-title {
         font-size: 0.7rem; /* タイトルのフォントサイズをさらに小さく */
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.6rem; /* ボタンのパディングをさらに小さく */
+        font-size: 0.75rem; /* ボタンのフォントサイズをさらに小さく */
+    }
+
+    .nav-tabs .nav-link {
+        font-size: 0.7rem; /* ジャンルの文字サイズをさらに小さく */
+        padding: 0.3rem 0.6rem;
+    }
+
+    /* 見出しのサイズ */
+    h2.my-4 {
+        font-size: 1.3rem; /* 見出しをさらに小さく */
     }
 }
