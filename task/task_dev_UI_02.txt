@@ -1,0 +1,7 @@
+変更内容：
+レスポンシブ対応
+
+詳細：
+・Reading Note,PostReadingボタン
+・ジャンルの文字サイズ
+・見出し（<h2 class="my-4">Your Unfinished Books</h2>）
