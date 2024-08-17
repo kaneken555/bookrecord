@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',  # Googleプロバイダー
+    'allauth.socialaccount.providers.line',    # LINEプロバイダー
 
 ]
 
@@ -186,5 +187,20 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         },
         'OAUTH_PKCE_ENABLED': True,  # Optional: Enabling PKCE
-    }
+    },
+    'line': {
+        'APP': {
+            'client_id': os.environ.get('LINE_CLIENT_ID'),
+            'secret': os.environ.get('LINE_CLIENT_SECRET'),
+        },
+        'SCOPE': [
+            'profile',
+            'openid',
+            'email',
+        ],
+        'REDIRECT_URL': 'http://127.0.0.1:8000/accounts/line/login/callback/',
+    },
 }
+
+# 開発環境でのメール送信設定
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
