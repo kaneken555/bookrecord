@@ -21,7 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0&@u6y@@r1rof$dql+&vmu-bswl7o69!e6)t0!54e9^2j(qy(i'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("DJANGO_SECRET_KEY environment variable is not set.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',  # Googleプロバイダー
+    'allauth.socialaccount.providers.line',    # LINEプロバイダー
 
 ]
 
@@ -86,8 +89,12 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('MYSQL_DATABASE', 'my_django_db'),
+        'USER': os.getenv('MYSQL_USER', 'django_user'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD', 'mysql_pass'),
+        'HOST': os.getenv('MYSQL_HOST', 'localhost'),
+        'PORT': os.getenv('MYSQL_PORT', '3306'),  # MySQLのデフォルトポート
     }
 }
 
@@ -155,22 +162,6 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
-# SOCIALACCOUNT_PROVIDERS = {
-#     'google': {
-#         'APP': {
-#             'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
-#             'secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
-#             'key': ''
-#         },
-#         'SCOPE': [
-#             'profile',
-#             'email',
-#         ],
-#         'AUTH_PARAMS': {
-#             'access_type': 'online',
-#         },
-#     }
-# }
 # OAuth2 client credentials
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -186,5 +177,20 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         },
         'OAUTH_PKCE_ENABLED': True,  # Optional: Enabling PKCE
-    }
+    },
+    'line': {
+        'APP': {
+            'client_id': os.environ.get('LINE_CLIENT_ID'),
+            'secret': os.environ.get('LINE_CLIENT_SECRET'),
+        },
+        'SCOPE': [
+            'profile',
+            'openid',
+            'email',
+        ],
+        'REDIRECT_URL': 'http://127.0.0.1:8000/accounts/line/login/callback/',
+    },
 }
+
+# 開発環境でのメール送信設定
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
