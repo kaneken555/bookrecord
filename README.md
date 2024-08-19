@@ -27,6 +27,7 @@
 
 
 ## システム構成図
+準備中
 
 ## 画面遷移図+操作/機能/データ
 <img src="https://github.com/user-attachments/assets/d445f485-f849-4965-83b4-b6a0b8626358" width="1000">
@@ -34,7 +35,6 @@
 ## ER図
 <img src="https://github.com/user-attachments/assets/dd9ae378-bc8e-406e-b85f-b146854084a5" width="500">
 
-
 ## 今後の展望
-
+lineID連携
 
