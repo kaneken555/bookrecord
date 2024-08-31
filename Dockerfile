@@ -10,11 +10,14 @@ RUN apt-get update && apt-get install -y gcc pkg-config libmariadb-dev
 WORKDIR /app
 
 # 必要なパッケージをインストールする
-COPY requirements.txt requirements.txt
+COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 
 # アプリケーションコードをコピーする
-COPY myproject /app/myproject/
+COPY myproject /app/myproject
+
+# 作業ディレクトリをDjangoプロジェクトディレクトリに変更
+WORKDIR /app/myproject
 
 # 環境変数を設定してcollectstaticコマンドを実行
 ENV DJANGO_SETTINGS_MODULE=myproject.settings
