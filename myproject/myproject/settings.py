@@ -28,7 +28,7 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 
 # Application definition
@@ -90,11 +90,11 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME', 'mydatabase'),
-        'USER': os.getenv('DB_USER', 'mydatabaseuser'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'mypassword'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '3306'),  # MySQLのデフォルトポート
+        'NAME': os.getenv('MYSQL_DATABASE', 'my_django_db'),
+        'USER': os.getenv('MYSQL_USER', 'django_user'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD', 'mysql_pass'),
+        'HOST': os.getenv('MYSQL_HOST', 'localhost'),
+        'PORT': os.getenv('MYSQL_PORT', '3306'),  # MySQLのデフォルトポート
     }
 }
 
