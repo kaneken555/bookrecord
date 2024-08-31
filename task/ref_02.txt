@@ -1,0 +1,16 @@
+変更内容：
+モジュール分割：DB関連処理をView関数から分離
+
+詳細：
+db_helpers.pyを作成（DB関連モジュール）
+・get_genres：ジャンルを取得
+・get_unfinished_books_by_genre：ユーザーの未読了本をジャンル指定で取得
+・get_finished_books_by_genre：ユーザーの読了本をジャンル指定で取得
+・get_other_books_by_genre：他のユーザーの本をジャンル指定で取得
+・search_books_in_app：アプリ内のワード検索機能
+・create_book_user：BookUserレコードを作成
+・create_basic_info：BasicInfoレコードを作成
+・add_tags_to_basic_info：タグとBasicInfoの関連付け
+
+external_api_helpers.pyを作成（外部APIモジュール）
+・search_books_google_api：Google Books APIを利用してタイトルから検索
