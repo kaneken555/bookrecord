@@ -88,10 +88,6 @@ def new(request):
             print(f"BookUser created: {new_book_user}")
 
             add_tags_to_basic_info(basic_info, tag_names)
-            # for tag_name in tag_names:
-            #     if tag_name:
-            #         tag, created = Tag.objects.get_or_create(tag_name=tag_name)
-            #         BasicInfoTag.objects.create(basic_info_code=basic_info, tag_id=tag)
 
             return redirect('top')
         else:
@@ -261,11 +257,7 @@ def search_view(request):
     books = BasicInfo.objects.none()  # 初期値は空のクエリセット
     if query:
         books = search_books_in_app(query)  # 変更後の関数名で呼び出し
-        # books = Book.objects.filter(
-        #     Q(title__icontains=query) |
-        #     Q(basic_info_code__purpose__icontains=query) |
-        #     Q(basic_info_code__buy_reason__icontains=query)
-        # )
+
     user_books = BookUser.objects.filter(user_id=request.user).values_list('book_code', flat=True)
 
     return render(request, 'search_results.html', {'books': books, 'query': query, 'user_books': user_books})
@@ -277,11 +269,6 @@ def register_book(request, book_id):
 
     # BasicInfoのコピーを作成
     new_basic_info = create_basic_info(user.username, is_finished=book.basic_info_code.is_finished)
-
-    # new_basic_info = BasicInfo.objects.create(
-    #     registrant=user.username,
-    #     is_finished=book.basic_info_code.is_finished
-    # )
 
     # BookUserに新しいレコードを追加
     if not BookUser.objects.filter(book_code=book, user_id=user).exists():
@@ -319,14 +306,3 @@ def search_books(request):
     
     data = search_books_google_api(title)
     return JsonResponse(data)
-
-    # api_key = os.environ.get('GOOGLE_BOOKS_API_KEY')  # 環境変数からAPIキーを取得
-
-    # url = f'https://www.googleapis.com/books/v1/volumes?q=intitle:{title}&key={api_key}'
-
-    # response = requests.get(url)
-    # if response.status_code == 200:
-    #     data = response.json()
-    #     return JsonResponse(data)
-    # else:
-    #     return JsonResponse({'error': 'Failed to fetch data from Google Books API.'}, status=response.status_code)
