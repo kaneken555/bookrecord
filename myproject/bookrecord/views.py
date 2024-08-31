@@ -15,21 +15,27 @@ from django.views.decorators.http import require_GET
 from urllib.request import urlopen
 from django.core.files.base import ContentFile
 
+from .db_helpers import get_genres, get_unfinished_books_by_genre, get_finished_books_by_genre, get_other_books_by_genre
+
 @login_required
 def top_view(request):
-    genres = {genre.genre_id: genre.genre_name for genre in Genre.objects.all()}
+    genres = get_genres()
     selected_genre = request.GET.get('genre', 'all')
 
-    if selected_genre == 'all':
-        user_book_users = BookUser.objects.filter(user_id=request.user)
-        other_book_users = BookUser.objects.exclude(user_id=request.user)
-    else:
-        user_book_users = BookUser.objects.filter(user_id=request.user, book_code__genre__genre_id=selected_genre)
-        other_book_users = BookUser.objects.filter(book_code__genre__genre_id=selected_genre).exclude(user_id=request.user)
+    # unfinished_books, other_books = get_books_by_genre(request.user, selected_genre)
+    unfinished_books = get_unfinished_books_by_genre(request.user, selected_genre)
+    other_books = get_other_books_by_genre(request.user, selected_genre)
 
-    # 未完了の本を取得
-    unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
-    other_books = [book_user.book_code for book_user in other_book_users]
+    # if selected_genre == 'all':
+    #     user_book_users = BookUser.objects.filter(user_id=request.user)
+    #     other_book_users = BookUser.objects.exclude(user_id=request.user)
+    # else:
+    #     user_book_users = BookUser.objects.filter(user_id=request.user, book_code__genre__genre_id=selected_genre)
+    #     other_book_users = BookUser.objects.filter(book_code__genre__genre_id=selected_genre).exclude(user_id=request.user)
+
+    # # 未完了の本を取得
+    # unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
+    # other_books = [book_user.book_code for book_user in other_book_users]
 
     return render(request, 'top.html', {
         'unfinished_books': unfinished_books,
@@ -121,17 +127,20 @@ def detail_view(request, book_id):
 
 @login_required
 def list_view(request):
-    genres = {genre.genre_id: genre.genre_name for genre in Genre.objects.all()}
+    genres = get_genres()
     selected_genre = request.GET.get('genre', 'all')
-    
-    if selected_genre == 'all':
-        user_book_users = BookUser.objects.filter(user_id=request.user)
-    else:
-        user_book_users = BookUser.objects.filter(user_id=request.user, book_code__genre__genre_id=selected_genre)
 
-    # FinishedとUnfinishedの本を分けてリスト化
-    finished_books = [book_user.book_code for book_user in user_book_users if book_user.basic_info_code.is_finished]
-    unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
+    unfinished_books = get_unfinished_books_by_genre(request.user, selected_genre)
+    finished_books = get_finished_books_by_genre(request.user, selected_genre)
+    
+    # if selected_genre == 'all':
+    #     user_book_users = BookUser.objects.filter(user_id=request.user)
+    # else:
+    #     user_book_users = BookUser.objects.filter(user_id=request.user, book_code__genre__genre_id=selected_genre)
+
+    # # FinishedとUnfinishedの本を分けてリスト化
+    # finished_books = [book_user.book_code for book_user in user_book_users if book_user.basic_info_code.is_finished]
+    # unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
 
     return render(request, 'list.html', {
         'finished_books': finished_books,
