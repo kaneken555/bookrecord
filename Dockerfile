@@ -20,7 +20,7 @@ COPY myproject /app/myproject
 WORKDIR /app/myproject
 
 # 環境変数を設定してcollectstaticコマンドを実行
-ENV DJANGO_SETTINGS_MODULE=myproject.settings
+# ENV DJANGO_SETTINGS_MODULE=myproject.settings
 RUN python manage.py collectstatic --noinput
 
 # Gunicornを使ってアプリケーションを起動する
