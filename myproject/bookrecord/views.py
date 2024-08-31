@@ -15,7 +15,7 @@ from django.views.decorators.http import require_GET
 from urllib.request import urlopen
 from django.core.files.base import ContentFile
 
-from .db_helpers import get_genres, get_unfinished_books_by_genre, get_finished_books_by_genre, get_other_books_by_genre, search_books_in_app
+from .db_helpers import get_genres, get_unfinished_books_by_genre, get_finished_books_by_genre, get_other_books_by_genre, search_books_in_app, create_book_user, create_basic_info, add_tags_to_basic_info
 from .external_api_helpers import search_books_google_api
 
 @login_required
@@ -76,19 +76,22 @@ def new(request):
                 )
 
             book.save()
+
+            new_book_user = create_book_user(request.user, book, basic_info)
             
-            # BookUserに新しいレコードを追加
-            new_book_user = BookUser.objects.create(
-                book_code=book,
-                user_id=request.user,
-                basic_info_code=basic_info
-            )
+            # # BookUserに新しいレコードを追加
+            # new_book_user = BookUser.objects.create(
+            #     book_code=book,
+            #     user_id=request.user,
+            #     basic_info_code=basic_info
+            # )
             print(f"BookUser created: {new_book_user}")
 
-            for tag_name in tag_names:
-                if tag_name:
-                    tag, created = Tag.objects.get_or_create(tag_name=tag_name)
-                    BasicInfoTag.objects.create(basic_info_code=basic_info, tag_id=tag)
+            add_tags_to_basic_info(basic_info, tag_names)
+            # for tag_name in tag_names:
+            #     if tag_name:
+            #         tag, created = Tag.objects.get_or_create(tag_name=tag_name)
+            #         BasicInfoTag.objects.create(basic_info_code=basic_info, tag_id=tag)
 
             return redirect('top')
         else:
@@ -273,10 +276,12 @@ def register_book(request, book_id):
     user = request.user
 
     # BasicInfoのコピーを作成
-    new_basic_info = BasicInfo.objects.create(
-        registrant=user.username,
-        is_finished=book.basic_info_code.is_finished
-    )
+    new_basic_info = create_basic_info(user.username, is_finished=book.basic_info_code.is_finished)
+
+    # new_basic_info = BasicInfo.objects.create(
+    #     registrant=user.username,
+    #     is_finished=book.basic_info_code.is_finished
+    # )
 
     # BookUserに新しいレコードを追加
     if not BookUser.objects.filter(book_code=book, user_id=user).exists():

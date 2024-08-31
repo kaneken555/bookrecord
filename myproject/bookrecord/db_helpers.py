@@ -60,3 +60,22 @@ def search_books_in_app(query):
         Q(basic_info_code__purpose__icontains=query) |
         Q(basic_info_code__buy_reason__icontains=query)
     )
+
+def create_book_user(user, book, basic_info):
+    return BookUser.objects.create(
+        user_id=user,
+        book_code=book,
+        basic_info_code=basic_info
+    )
+
+def create_basic_info(registrant, is_finished=False):
+    return BasicInfo.objects.create(
+        registrant=registrant,
+        is_finished=is_finished
+    )
+
+def add_tags_to_basic_info(basic_info, tag_names):
+    for tag_name in tag_names:
+        if tag_name:
+            tag, created = Tag.objects.get_or_create(tag_name=tag_name)
+            BasicInfoTag.objects.create(basic_info_code=basic_info, tag_id=tag)
