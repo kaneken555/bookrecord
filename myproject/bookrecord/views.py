@@ -15,7 +15,8 @@ from django.views.decorators.http import require_GET
 from urllib.request import urlopen
 from django.core.files.base import ContentFile
 
-from .db_helpers import get_genres, get_unfinished_books_by_genre, get_finished_books_by_genre, get_other_books_by_genre
+from .db_helpers import get_genres, get_unfinished_books_by_genre, get_finished_books_by_genre, get_other_books_by_genre, search_books_in_app
+from .external_api_helpers import search_books_google_api
 
 @login_required
 def top_view(request):
@@ -256,11 +257,12 @@ def search_view(request):
     query = request.GET.get('q')
     books = BasicInfo.objects.none()  # 初期値は空のクエリセット
     if query:
-        books = Book.objects.filter(
-            Q(title__icontains=query) |
-            Q(basic_info_code__purpose__icontains=query) |
-            Q(basic_info_code__buy_reason__icontains=query)
-        )
+        books = search_books_in_app(query)  # 変更後の関数名で呼び出し
+        # books = Book.objects.filter(
+        #     Q(title__icontains=query) |
+        #     Q(basic_info_code__purpose__icontains=query) |
+        #     Q(basic_info_code__buy_reason__icontains=query)
+        # )
     user_books = BookUser.objects.filter(user_id=request.user).values_list('book_code', flat=True)
 
     return render(request, 'search_results.html', {'books': books, 'query': query, 'user_books': user_books})
@@ -309,14 +311,17 @@ def search_books(request):
     title = request.GET.get('title', '')
     if not title:
         return JsonResponse({'error': 'Title parameter is required.'}, status=400)
+    
+    data = search_books_google_api(title)
+    return JsonResponse(data)
 
-    api_key = os.environ.get('GOOGLE_BOOKS_API_KEY')  # 環境変数からAPIキーを取得
+    # api_key = os.environ.get('GOOGLE_BOOKS_API_KEY')  # 環境変数からAPIキーを取得
 
-    url = f'https://www.googleapis.com/books/v1/volumes?q=intitle:{title}&key={api_key}'
+    # url = f'https://www.googleapis.com/books/v1/volumes?q=intitle:{title}&key={api_key}'
 
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        return JsonResponse(data)
-    else:
-        return JsonResponse({'error': 'Failed to fetch data from Google Books API.'}, status=response.status_code)
+    # response = requests.get(url)
+    # if response.status_code == 200:
+    #     data = response.json()
+    #     return JsonResponse(data)
+    # else:
+    #     return JsonResponse({'error': 'Failed to fetch data from Google Books API.'}, status=response.status_code)

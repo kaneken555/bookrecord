@@ -7,3 +7,7 @@ db_helpers.pyを作成（DB関連モジュール）
 ・get_unfinished_books_by_genre：ユーザーの未読了本をジャンル指定で取得
 ・get_finished_books_by_genre：ユーザーの読了本をジャンル指定で取得
 ・get_other_books_by_genre：他のユーザーの本をジャンル指定で取得
+・search_books_in_app：アプリ内のワード検索機能
+
+external_api_helpers.pyを作成（外部APIモジュール）
+・search_books_google_api：Google Books APIを利用してタイトルから検索

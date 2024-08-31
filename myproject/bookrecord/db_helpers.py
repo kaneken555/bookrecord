@@ -53,3 +53,10 @@ def get_other_books_by_genre(user, selected_genre):
     other_books = [book_user.book_code for book_user in other_book_users]
 
     return other_books
+
+def search_books_in_app(query):
+    return Book.objects.filter(
+        Q(title__icontains=query) |
+        Q(basic_info_code__purpose__icontains=query) |
+        Q(basic_info_code__buy_reason__icontains=query)
+    )
