@@ -29,14 +29,19 @@
 ・読書メモを記録することができます。
 
 ### 機能
+#### メイン機能
 本検索（Google Book API）  
 <img width="500" alt="image" src="https://github.com/user-attachments/assets/5a298c69-50d1-45a6-8e52-80785edeb905">
 
-登録　　  
+本登録　　  
 読書記録  
 本/読書記録削除  
 登録リスト確認  
+
+#### 認証機能
+ユーザー登録/ログイン/ログアウト  
 ソーシャルログイン（Google、LINE）＊デプロイ未完了  
+
 
 ## システム構成図
 準備中
