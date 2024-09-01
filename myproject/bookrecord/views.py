@@ -15,21 +15,28 @@ from django.views.decorators.http import require_GET
 from urllib.request import urlopen
 from django.core.files.base import ContentFile
 
+from .db_helpers import get_genres, get_unfinished_books_by_genre, get_finished_books_by_genre, get_other_books_by_genre, search_books_in_app, create_book_user, create_basic_info, add_tags_to_basic_info
+from .external_api_helpers import search_books_google_api
+
 @login_required
 def top_view(request):
-    genres = {genre.genre_id: genre.genre_name for genre in Genre.objects.all()}
+    genres = get_genres()
     selected_genre = request.GET.get('genre', 'all')
 
-    if selected_genre == 'all':
-        user_book_users = BookUser.objects.filter(user_id=request.user)
-        other_book_users = BookUser.objects.exclude(user_id=request.user)
-    else:
-        user_book_users = BookUser.objects.filter(user_id=request.user, book_code__genre__genre_id=selected_genre)
-        other_book_users = BookUser.objects.filter(book_code__genre__genre_id=selected_genre).exclude(user_id=request.user)
+    # unfinished_books, other_books = get_books_by_genre(request.user, selected_genre)
+    unfinished_books = get_unfinished_books_by_genre(request.user, selected_genre)
+    other_books = get_other_books_by_genre(request.user, selected_genre)
 
-    # 未完了の本を取得
-    unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
-    other_books = [book_user.book_code for book_user in other_book_users]
+    # if selected_genre == 'all':
+    #     user_book_users = BookUser.objects.filter(user_id=request.user)
+    #     other_book_users = BookUser.objects.exclude(user_id=request.user)
+    # else:
+    #     user_book_users = BookUser.objects.filter(user_id=request.user, book_code__genre__genre_id=selected_genre)
+    #     other_book_users = BookUser.objects.filter(book_code__genre__genre_id=selected_genre).exclude(user_id=request.user)
+
+    # # 未完了の本を取得
+    # unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
+    # other_books = [book_user.book_code for book_user in other_book_users]
 
     return render(request, 'top.html', {
         'unfinished_books': unfinished_books,
@@ -69,19 +76,18 @@ def new(request):
                 )
 
             book.save()
+
+            new_book_user = create_book_user(request.user, book, basic_info)
             
-            # BookUserに新しいレコードを追加
-            new_book_user = BookUser.objects.create(
-                book_code=book,
-                user_id=request.user,
-                basic_info_code=basic_info
-            )
+            # # BookUserに新しいレコードを追加
+            # new_book_user = BookUser.objects.create(
+            #     book_code=book,
+            #     user_id=request.user,
+            #     basic_info_code=basic_info
+            # )
             print(f"BookUser created: {new_book_user}")
 
-            for tag_name in tag_names:
-                if tag_name:
-                    tag, created = Tag.objects.get_or_create(tag_name=tag_name)
-                    BasicInfoTag.objects.create(basic_info_code=basic_info, tag_id=tag)
+            add_tags_to_basic_info(basic_info, tag_names)
 
             return redirect('top')
         else:
@@ -121,17 +127,20 @@ def detail_view(request, book_id):
 
 @login_required
 def list_view(request):
-    genres = {genre.genre_id: genre.genre_name for genre in Genre.objects.all()}
+    genres = get_genres()
     selected_genre = request.GET.get('genre', 'all')
-    
-    if selected_genre == 'all':
-        user_book_users = BookUser.objects.filter(user_id=request.user)
-    else:
-        user_book_users = BookUser.objects.filter(user_id=request.user, book_code__genre__genre_id=selected_genre)
 
-    # FinishedとUnfinishedの本を分けてリスト化
-    finished_books = [book_user.book_code for book_user in user_book_users if book_user.basic_info_code.is_finished]
-    unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
+    unfinished_books = get_unfinished_books_by_genre(request.user, selected_genre)
+    finished_books = get_finished_books_by_genre(request.user, selected_genre)
+    
+    # if selected_genre == 'all':
+    #     user_book_users = BookUser.objects.filter(user_id=request.user)
+    # else:
+    #     user_book_users = BookUser.objects.filter(user_id=request.user, book_code__genre__genre_id=selected_genre)
+
+    # # FinishedとUnfinishedの本を分けてリスト化
+    # finished_books = [book_user.book_code for book_user in user_book_users if book_user.basic_info_code.is_finished]
+    # unfinished_books = [book_user.book_code for book_user in user_book_users if not book_user.basic_info_code.is_finished]
 
     return render(request, 'list.html', {
         'finished_books': finished_books,
@@ -247,11 +256,8 @@ def search_view(request):
     query = request.GET.get('q')
     books = BasicInfo.objects.none()  # 初期値は空のクエリセット
     if query:
-        books = Book.objects.filter(
-            Q(title__icontains=query) |
-            Q(basic_info_code__purpose__icontains=query) |
-            Q(basic_info_code__buy_reason__icontains=query)
-        )
+        books = search_books_in_app(query)  # 変更後の関数名で呼び出し
+
     user_books = BookUser.objects.filter(user_id=request.user).values_list('book_code', flat=True)
 
     return render(request, 'search_results.html', {'books': books, 'query': query, 'user_books': user_books})
@@ -262,10 +268,7 @@ def register_book(request, book_id):
     user = request.user
 
     # BasicInfoのコピーを作成
-    new_basic_info = BasicInfo.objects.create(
-        registrant=user.username,
-        is_finished=book.basic_info_code.is_finished
-    )
+    new_basic_info = create_basic_info(user.username, is_finished=book.basic_info_code.is_finished)
 
     # BookUserに新しいレコードを追加
     if not BookUser.objects.filter(book_code=book, user_id=user).exists():
@@ -300,14 +303,6 @@ def search_books(request):
     title = request.GET.get('title', '')
     if not title:
         return JsonResponse({'error': 'Title parameter is required.'}, status=400)
-
-    api_key = os.environ.get('GOOGLE_BOOKS_API_KEY')  # 環境変数からAPIキーを取得
-
-    url = f'https://www.googleapis.com/books/v1/volumes?q=intitle:{title}&key={api_key}'
-
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        return JsonResponse(data)
-    else:
-        return JsonResponse({'error': 'Failed to fetch data from Google Books API.'}, status=response.status_code)
+    
+    data = search_books_google_api(title)
+    return JsonResponse(data)
