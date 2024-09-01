@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="container custom-container">
-    <h2 class="my-4">Your Unfinished Books</h2>
+    <h2 class="my-4">Your Reading Books</h2>
     <!-- ジャンルごとのタブ -->
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -41,7 +41,7 @@
                             </h5>
                             <div class="mt-auto">
                                 <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
-                                <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Post Reading</a>
+                                <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Satisfaction Level</a>
                             </div>
                         </div>
                     </div>
