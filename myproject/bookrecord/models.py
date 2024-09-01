@@ -5,16 +5,11 @@ from django.contrib.auth.models import User
 
 # Define the Genre model with choices
 class Genre(models.Model):
-    GENRE_CHOICES = [
-        ('A', 'Genre A'),
-        ('B', 'Genre B'),
-        ('C', 'Genre C'),
-    ]
     genre_id = models.AutoField(primary_key=True)
-    genre_name = models.CharField(max_length=100, choices=GENRE_CHOICES, unique=True)
+    genre_name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return self.get_genre_name_display()
+        return self.genre_name
 
 class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)

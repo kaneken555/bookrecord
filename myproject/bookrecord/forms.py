@@ -27,7 +27,7 @@ class BasicInfoForm(forms.ModelForm):
             'buy_reason': '購入のきっかけ',
         }
         widgets = {
-            'purpose': forms.Textarea(attrs={'rows': 2}),  # 高さを4行に設定
+            'purpose': forms.Textarea(attrs={'rows': 2}),  # 高さを2行に設定
             'buy_reason': forms.Textarea(attrs={'rows': 2}),  # 高さを2行に設定
         }
 
