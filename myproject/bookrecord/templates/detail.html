@@ -71,13 +71,13 @@
 
             <!-- Post Reading Summaries Section -->
             <div class="mb-4"> <!-- 余白を追加 -->
-                <h3>Post Reading Summaries</h3>
+                <h3>Satisfaction Level</h3>
                 <ul class="list-group">
                     {% for summary in post_reading_summaries %}
                         <li class="list-group-item">
                             <strong>日付:</strong> {{ summary.registration_date }}<br>
-                            <strong>気づき:</strong> {{ summary.impression }}<br>
-                            <strong>学び:</strong> {{ summary.learning }}<br>
+                            <!-- <strong>気づき:</strong> {{ summary.impression }}<br>
+                            <strong>学び:</strong> {{ summary.learning }}<br> -->
                             <strong>満足度:</strong> {{ summary.satisfaction_level }}<br>
                             {% if summary.basic_info_code.registrant == user.username %}
                                 <a href="{% url 'update_post_reading_summary' summary.summary_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
@@ -87,7 +87,7 @@
                     {% endfor %}
                 </ul>
                 {% if basic_info.registrant == user.username %}
-                    <a href="{% url 'postreading' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Post Reading Summary</a>
+                    <a href="{% url 'postreading' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Satisfaction Level</a>
                 {% endif %}
             </div>
 
