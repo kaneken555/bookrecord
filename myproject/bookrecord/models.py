@@ -83,10 +83,10 @@ class PostReadingSummary(models.Model):
     summary_id = models.AutoField(primary_key=True)
     registration_date = models.DateField()
     update_date = models.DateTimeField(auto_now=True)
-    impression = models.TextField()
-    learning = models.TextField()
+    impression = models.TextField(blank=True)
+    learning = models.TextField(blank=True)
     satisfaction_level = models.IntegerField()
-    note = models.TextField()
+    note = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.basic_info_code} - {self.summary_id}"
