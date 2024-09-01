@@ -41,7 +41,7 @@ Google Books APIを用いて素早く本の検索/登録ができます。
 準備中
 
 ## 画面遷移図
-準備中
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/042ef5cc-5ace-48f6-b4ef-ff751390e503">
 
 ## ER図
 <img src="https://github.com/user-attachments/assets/dd9ae378-bc8e-406e-b85f-b146854084a5" width="500">
