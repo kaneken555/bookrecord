@@ -6,7 +6,7 @@ services:
     command: bash -c "python manage.py collectstatic --noinput && gunicorn --workers 3 --bind 0.0.0.0:8000 myproject.wsgi:application"
     volumes:
       - .:/app
-      - static_volume:/app/staticfiles
+      - static_volume:/app/myproject/staticfiles
       - media_volume:/app/media
     expose:
       - "8000"
@@ -32,7 +32,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - static_volume:/app/staticfiles
+      - static_volume:/app/myproject/staticfiles
       - media_volume:/app/media
     depends_on:
       - web
