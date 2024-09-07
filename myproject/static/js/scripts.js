@@ -144,3 +144,83 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+// モーダル表示・非表示の処理
+document.addEventListener('DOMContentLoaded', function() {
+    let noteIdToDelete = null;
+    const modal = new bootstrap.Modal(document.getElementById('myModal')); // Bootstrapのモーダル初期化
+    // const openModalBtn = document.getElementById("open-modal");
+    const closeModal = document.getElementsByClassName("close")[0];
+    const confirmDeleteButton = document.getElementById("confirmDeleteButton");
+
+
+    // モーダルを開く
+    document.querySelectorAll(".delete-reading-note").forEach(button => {
+        button.onclick = function() {
+            noteIdToDelete = this.getAttribute("data-note-id")
+            // ボタンからReading Noteの詳細を取得してモーダルにセット
+            const noteImpression = this.closest(".list-group-item").querySelector(".note-impression").textContent;
+            const noteLearning = this.closest(".list-group-item").querySelector(".note-learning").textContent;
+            const noteDate = this.closest(".list-group-item").querySelector(".note-date").textContent;
+
+            document.getElementById("note-impression").textContent = noteImpression;
+            document.getElementById("note-learning").textContent = noteLearning;
+            document.getElementById("note-date").textContent = noteDate;
+            modal.show();
+        }
+    });
+
+    // モーダルを閉じる
+    closeModal.onclick = function() {
+        modal.hide(); // モーダルを閉じる
+    }
+
+    // OKボタンを押した場合の処理
+    confirmDeleteButton.addEventListener("click", function () {
+        if (noteIdToDelete) {
+            // Fetchを使って削除リクエストを送信
+            fetch(`/delete_reading_note/${noteIdToDelete}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')  // CSRFトークンを送信
+                },
+            }).then(response => {
+                if (response.ok) {
+                    // ページをリロードして削除後の状態を表示
+                    window.location.reload();
+                } else {
+                    console.error('削除に失敗しました。');
+                }
+            });            
+            // modal.hide(); // モーダルを閉じる
+        }
+    });
+
+    // キャンセルボタンを押した場合の処理
+    document.getElementById("cancel-btn").onclick = function() {
+        alert("キャンセル が押されました。");
+        modal.hide(); // モーダルを閉じる
+    }
+
+    // モーダル外クリックでの処理
+    window.onclick = function(event) {
+        if (event.target == modal._element) { 
+            modal.hide();
+        }
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});

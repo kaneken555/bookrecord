@@ -54,12 +54,13 @@
                 <ul class="list-group">
                     {% for note in reading_notes %}
                         <li class="list-group-item">
-                            <strong>日付:</strong> {{ note.registration_date }}<br>
-                            <strong>気づき:</strong> {{ note.impression }}<br>
-                            <strong>学び:</strong> {{ note.learning }}<br>
+                            <strong>日付:</strong> <span class="note-date">{{ note.registration_date }}</span><br>
+                            <strong>気づき:</strong> <span class="note-impression">{{ note.impression }}</span><br>
+                            <strong>学び:</strong> <span class="note-learning">{{ note.learning }}</span><br>
                             {% if basic_info.registrant == user.username %}
                                 <a href="{% url 'update_reading_note' note.note_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
                                 <a href="{% url 'delete_reading_note' note.note_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                                <button class="btn btn-danger btn-sm mt-2 delete-reading-note" data-note-id="{{ note.pk }}" type="button">Delete:モーダル</button>
                             {% endif %}
                         </li>
                     {% endfor %}
@@ -95,5 +96,31 @@
         </div>
     </div>
 </div>
+
+<!-- モーダルウィンドウ -->
+<div id="myModal" class="modal">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h5 class="modal-title" id="modalLabel">モーダルタイトル</h5> -->
+                <h5 class="modal-title" id="modalLabel">{{ book.title }}</h5> <!-- モーダルタイトルにDjango変数を表示 -->
+                <button type="button" class="btn-close close" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Reading Notesを削除しますか？</p>
+                <!-- <strong>summary:</strong> {{ book.summary }}<br> -->
+                <strong>気づき:</strong> <span id="note-impression"></span><br>
+                <strong>学び:</strong> <span id="note-learning"></span><br>
+                <strong>日付:</strong> <span id="note-date"></span>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmDeleteButton" class="btn btn-success">削除</button>
+                <button id="cancel-btn" class="btn btn-secondary">キャンセル</button>
+            </div>
+        </div>
+    </div>
+</div>
+  
 {% endblock %}
 
