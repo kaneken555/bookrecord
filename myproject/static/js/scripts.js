@@ -262,3 +262,54 @@ document.addEventListener('DOMContentLoaded', function() {
         return cookieValue;
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const satisfactionModal = new bootstrap.Modal(document.getElementById('satisfactionModal')); // Satisfaction Levelモーダルの初期化
+    const confirmAddSatisfactionButton = document.getElementById('confirmAddSatisfactionButton');
+    const summaryDateInput = document.getElementById('summary-date-input');
+
+    // 今日の日付をデフォルトでセットする
+    const today = new Date().toISOString().split('T')[0];  // 今日の日付をYYYY-MM-DD形式で取得
+    summaryDateInput.value = today;
+
+    // Satisfaction Levelの追加ボタンをクリックしたときにモーダルを開く
+    document.querySelector('.register-satisfaction-level').addEventListener('click', function() {
+        satisfactionModal.show();
+    });
+
+    // Satisfaction Level登録の確認ボタンが押された場合
+    confirmAddSatisfactionButton.addEventListener('click', function() {
+        const satisfactionLevel = document.getElementById('satisfaction-level-input').value;
+        const summaryDate = document.getElementById('summary-date-input').value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // ボタンの data-book-code 属性から book_code を取得
+        const bookCode = document.querySelector('.register-satisfaction-level').getAttribute('data-book-code');
+
+        // フォームデータを構築
+        const formData = new FormData();
+        formData.append('satisfaction_level', satisfactionLevel);
+        formData.append('registration_date', summaryDate);
+        formData.append('csrfmiddlewaretoken', csrfToken);
+
+        // AJAXリクエストを送信
+        fetch(`/postreading/${bookCode}/`, {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                // 成功した場合、ページをリロードまたはデータの再描画
+                window.location.reload();
+            } else {
+                console.error('登録に失敗しました。');
+                document.getElementById('modal-error-message').textContent = '登録に失敗しました。再度お試しください。';
+            }
+        });
+    });
+
+    // キャンセルボタンをクリックしたときにモーダルを閉じる
+    document.getElementById('cancelSatisfactionButton').addEventListener('click', function() {
+        satisfactionModal.hide();
+    });
+});

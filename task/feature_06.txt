@@ -1,0 +1,2 @@
+変更内容：
+Satisfaction Levelの入力画面をモーダルウィンドウ化(detail)
