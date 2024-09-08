@@ -144,3 +144,121 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+// モーダル表示・非表示の処理
+document.addEventListener('DOMContentLoaded', function() {
+    let noteIdToDelete = null;
+    let deleteType = null; // 'reading_note' か 'satisfaction_level' を格納
+
+    const modal = new bootstrap.Modal(document.getElementById('myModal')); // Bootstrapのモーダル初期化
+    // const openModalBtn = document.getElementById("open-modal");
+    const closeModal = document.getElementsByClassName("close")[0];
+    const confirmDeleteButton = document.getElementById("confirmDeleteButton");
+
+
+    // モーダルを開く - Reading Notesの削除
+    document.querySelectorAll(".delete-reading-note").forEach(button => {
+        button.onclick = function() {
+            noteIdToDelete = this.getAttribute("data-note-id")
+            deleteType = 'reading_note'; // 削除タイプを設定
+
+            // ボタンからReading Noteの詳細を取得してモーダルにセット
+            const noteImpression = this.closest(".list-group-item").querySelector(".note-impression").textContent;
+            const noteLearning = this.closest(".list-group-item").querySelector(".note-learning").textContent;
+            const noteDate = this.closest(".list-group-item").querySelector(".note-date").textContent;
+
+            document.getElementById("note-impression").textContent = noteImpression;
+            document.getElementById("note-learning").textContent = noteLearning;
+            document.getElementById("note-date").textContent = noteDate;
+            document.getElementById("modal-message").textContent = "Reading Noteを削除しますか？";
+
+            // Reading Noteの詳細を表示し、Satisfaction Levelの詳細を隠す
+            document.getElementById("reading-note-details").style.display = 'block';
+            document.getElementById("satisfaction-level-details").style.display = 'none';
+
+            modal.show();
+        }
+    });
+
+    // モーダルを開く - Satisfaction Levelの削除
+    document.querySelectorAll(".delete-satisfaction-level").forEach(button => {
+        button.onclick = function() {
+            itemIdToDelete = this.getAttribute("data-summary-id");
+            deleteType = 'satisfaction_level'; // 削除タイプを設定
+
+            // データをモーダルにセット
+            const satisfactionLevel = this.closest(".list-group-item").querySelector(".satisfaction-level").textContent;
+            const summaryDate = this.closest(".list-group-item").querySelector(".summary-date").textContent;
+
+            document.getElementById("satisfaction-level").textContent = satisfactionLevel;
+            document.getElementById("summary-date").textContent = summaryDate;
+            document.getElementById("modal-message").textContent = "Satisfaction Levelを削除しますか？";
+
+            // Satisfaction Levelの詳細を表示し、Reading Noteの詳細を隠す
+            document.getElementById("satisfaction-level-details").style.display = 'block';
+            document.getElementById("reading-note-details").style.display = 'none';
+
+            modal.show();
+        }
+    });
+
+    // モーダルを閉じる
+    closeModal.onclick = function() {
+        modal.hide(); // モーダルを閉じる
+    }
+
+    // OKボタンを押した場合の処理
+    confirmDeleteButton.addEventListener("click", function () {
+        if (itemIdToDelete && deleteType) {
+            let url = '';
+            if (deleteType === 'reading_note') {
+                url = `/delete_reading_note/${itemIdToDelete}/`;
+            } else if (deleteType === 'satisfaction_level') {
+                url = `/delete_post_reading_summary/${itemIdToDelete}/`;
+            }
+            // Fetchを使って削除リクエストを送信
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')  // CSRFトークンを送信
+                },
+            }).then(response => {
+                if (response.ok) {
+                    // ページをリロードして削除後の状態を表示
+                    window.location.reload();
+                } else {
+                    console.error('削除に失敗しました。');
+                }
+            });            
+            // modal.hide(); // モーダルを閉じる
+        }
+    });
+
+    // キャンセルボタンを押した場合の処理
+    document.getElementById("cancel-btn").onclick = function() {
+        alert("キャンセル が押されました。");
+        modal.hide(); // モーダルを閉じる
+    }
+
+    // モーダル外クリックでの処理
+    window.onclick = function(event) {
+        if (event.target == modal._element) { 
+            modal.hide();
+        }
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
