@@ -76,13 +76,14 @@
                 <ul class="list-group">
                     {% for summary in post_reading_summaries %}
                         <li class="list-group-item">
-                            <strong>日付:</strong> {{ summary.registration_date }}<br>
+                            <strong>日付:</strong> <span class="summary-date">{{ summary.registration_date }}</span><br>
                             <!-- <strong>気づき:</strong> {{ summary.impression }}<br>
                             <strong>学び:</strong> {{ summary.learning }}<br> -->
-                            <strong>満足度:</strong> {{ summary.satisfaction_level }}<br>
+                            <strong>満足度:</strong> <span class="satisfaction-level">{{ summary.satisfaction_level }}</span><br>
                             {% if summary.basic_info_code.registrant == user.username %}
                                 <a href="{% url 'update_post_reading_summary' summary.summary_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
                                 <a href="{% url 'delete_post_reading_summary' summary.summary_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                                <button class="btn btn-danger btn-sm mt-2 delete-satisfaction-level" data-summary-id="{{ summary.pk }}" type="button">Delete:モーダル</button>
                             {% endif %}
                         </li>
                     {% endfor %}
@@ -108,11 +109,24 @@
                 <button type="button" class="btn-close close" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Reading Notesを削除しますか？</p>
+                <p id="modal-message">この項目を削除しますか？</p>
                 <!-- <strong>summary:</strong> {{ book.summary }}<br> -->
-                <strong>気づき:</strong> <span id="note-impression"></span><br>
+
+                <!-- Reading Notes用の表示項目 -->
+                <div id="reading-note-details">
+                    <strong>気づき:</strong> <span id="note-impression"></span><br>
+                    <strong>学び:</strong> <span id="note-learning"></span><br>
+                    <strong>日付:</strong> <span id="note-date"></span>
+                </div>
+
+                <!-- Satisfaction Level用の表示項目 -->
+                <div id="satisfaction-level-details" style="display:none;">
+                    <strong>満足度:</strong> <span id="satisfaction-level"></span><br>
+                    <strong>日付:</strong> <span id="summary-date"></span>
+                </div>
+                <!-- <strong>気づき:</strong> <span id="note-impression"></span><br>
                 <strong>学び:</strong> <span id="note-learning"></span><br>
-                <strong>日付:</strong> <span id="note-date"></span>
+                <strong>日付:</strong> <span id="note-date"></span> -->
             </div>
             <div class="modal-footer">
                 <button id="confirmDeleteButton" class="btn btn-success">削除</button>

@@ -148,16 +148,20 @@ document.addEventListener("DOMContentLoaded", function () {
 // モーダル表示・非表示の処理
 document.addEventListener('DOMContentLoaded', function() {
     let noteIdToDelete = null;
+    let deleteType = null; // 'reading_note' か 'satisfaction_level' を格納
+
     const modal = new bootstrap.Modal(document.getElementById('myModal')); // Bootstrapのモーダル初期化
     // const openModalBtn = document.getElementById("open-modal");
     const closeModal = document.getElementsByClassName("close")[0];
     const confirmDeleteButton = document.getElementById("confirmDeleteButton");
 
 
-    // モーダルを開く
+    // モーダルを開く - Reading Notesの削除
     document.querySelectorAll(".delete-reading-note").forEach(button => {
         button.onclick = function() {
             noteIdToDelete = this.getAttribute("data-note-id")
+            deleteType = 'reading_note'; // 削除タイプを設定
+
             // ボタンからReading Noteの詳細を取得してモーダルにセット
             const noteImpression = this.closest(".list-group-item").querySelector(".note-impression").textContent;
             const noteLearning = this.closest(".list-group-item").querySelector(".note-learning").textContent;
@@ -166,6 +170,34 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById("note-impression").textContent = noteImpression;
             document.getElementById("note-learning").textContent = noteLearning;
             document.getElementById("note-date").textContent = noteDate;
+            document.getElementById("modal-message").textContent = "Reading Noteを削除しますか？";
+
+            // Reading Noteの詳細を表示し、Satisfaction Levelの詳細を隠す
+            document.getElementById("reading-note-details").style.display = 'block';
+            document.getElementById("satisfaction-level-details").style.display = 'none';
+
+            modal.show();
+        }
+    });
+
+    // モーダルを開く - Satisfaction Levelの削除
+    document.querySelectorAll(".delete-satisfaction-level").forEach(button => {
+        button.onclick = function() {
+            itemIdToDelete = this.getAttribute("data-summary-id");
+            deleteType = 'satisfaction_level'; // 削除タイプを設定
+
+            // データをモーダルにセット
+            const satisfactionLevel = this.closest(".list-group-item").querySelector(".satisfaction-level").textContent;
+            const summaryDate = this.closest(".list-group-item").querySelector(".summary-date").textContent;
+
+            document.getElementById("satisfaction-level").textContent = satisfactionLevel;
+            document.getElementById("summary-date").textContent = summaryDate;
+            document.getElementById("modal-message").textContent = "Satisfaction Levelを削除しますか？";
+
+            // Satisfaction Levelの詳細を表示し、Reading Noteの詳細を隠す
+            document.getElementById("satisfaction-level-details").style.display = 'block';
+            document.getElementById("reading-note-details").style.display = 'none';
+
             modal.show();
         }
     });
@@ -177,9 +209,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // OKボタンを押した場合の処理
     confirmDeleteButton.addEventListener("click", function () {
-        if (noteIdToDelete) {
+        if (itemIdToDelete && deleteType) {
+            let url = '';
+            if (deleteType === 'reading_note') {
+                url = `/delete_reading_note/${itemIdToDelete}/`;
+            } else if (deleteType === 'satisfaction_level') {
+                url = `/delete_post_reading_summary/${itemIdToDelete}/`;
+            }
             // Fetchを使って削除リクエストを送信
-            fetch(`/delete_reading_note/${noteIdToDelete}/`, {
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': getCookie('csrftoken')  // CSRFトークンを送信
