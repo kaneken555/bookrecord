@@ -304,7 +304,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const summaryDate = document.getElementById('summary-date-input').value;
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-
         if(inputType=='reading_note'){
             // ボタンの data-book-code 属性から book_code を取得
             const bookCode = document.querySelector('.register-reading-note').getAttribute('data-book-code');
