@@ -265,6 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    // モーダル関連の要素
     const inputModal = new bootstrap.Modal(document.getElementById('inputModal')); // Satisfaction Levelモーダルの初期化
     const confirmAddButton = document.getElementById('confirmAddButton');
     const summaryDateInput = document.getElementById('summary-date-input');
@@ -281,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // キャンセルボタンをクリックしたときにモーダルを閉じる
     document.getElementById('cancelButton').addEventListener('click', () => inputModal.hide());
 
-    
+    // 日付のデフォルト値をセットする関数
     function setDefaultDate() {
         const today = new Date().toISOString().split('T')[0];
         summaryDateInput.value = today;
@@ -329,6 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sendPostRequest(url, formData);
     }
 
+    // サーバーにPOSTリクエストを送信
     function sendPostRequest(url, formData) {
         fetch(url, {
             method: 'POST',
