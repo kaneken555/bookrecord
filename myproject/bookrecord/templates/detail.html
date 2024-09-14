@@ -59,15 +59,15 @@
                             <strong>学び:</strong> <span class="note-learning">{{ note.learning }}</span><br>
                             {% if basic_info.registrant == user.username %}
                                 <a href="{% url 'update_reading_note' note.note_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
-                                <a href="{% url 'delete_reading_note' note.note_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                                <!-- <a href="{% url 'delete_reading_note' note.note_id %}" class="btn btn-danger btn-sm mt-2">Delete</a> -->
                                 <button class="btn btn-danger btn-sm mt-2 delete-reading-note" data-note-id="{{ note.pk }}" type="button">Delete:モーダル</button>
                             {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
                 {% if basic_info.registrant == user.username %}
-                    <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Reading Note</a>
-                    <button class="btn btn-danger btn-sm mt-2 register-reading-note"  data-book-code="{{ book.book_code }}" type="button">Register:モーダル</button>
+                    <!-- <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Reading Note</a> -->
+                    <button class="btn btn-primary btn-sm mt-2 register-reading-note"  data-book-code="{{ book.book_code }}" type="button">Register:モーダル</button>
                 {% endif %}
             </div>
 
@@ -83,15 +83,15 @@
                             <strong>満足度:</strong> <span class="satisfaction-level">{{ summary.satisfaction_level }}</span><br>
                             {% if summary.basic_info_code.registrant == user.username %}
                                 <a href="{% url 'update_post_reading_summary' summary.summary_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
-                                <a href="{% url 'delete_post_reading_summary' summary.summary_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                                <!-- <a href="{% url 'delete_post_reading_summary' summary.summary_id %}" class="btn btn-danger btn-sm mt-2">Delete</a> -->
                                 <button class="btn btn-danger btn-sm mt-2 delete-satisfaction-level" data-summary-id="{{ summary.pk }}" type="button">Delete:モーダル</button>
                             {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
                 {% if basic_info.registrant == user.username %}
-                    <a href="{% url 'postreading' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Satisfaction Level</a>
-                    <button class="btn btn-danger btn-sm mt-2 register-satisfaction-level"  data-book-code="{{ book.book_code }}" type="button">Register:モーダル</button>
+                    <!-- <a href="{% url 'postreading' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Satisfaction Level</a> -->
+                    <button class="btn btn-primary btn-sm mt-2 register-satisfaction-level"  data-book-code="{{ book.book_code }}" type="button">Register:モーダル</button>
                 {% endif %}
             </div>
 
