@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // モーダル表示・非表示の処理
 document.addEventListener('DOMContentLoaded', function() {
-    let noteIdToDelete = null;
+    let itemIdToDelete = null;
     let deleteType = null; // 'reading_note' か 'satisfaction_level' を格納
 
     const modal = new bootstrap.Modal(document.getElementById('myModal')); // Bootstrapのモーダル初期化
@@ -272,91 +272,78 @@ document.addEventListener('DOMContentLoaded', function() {
     let inputType = null; // 'reading_note' か 'satisfaction_level' を格納
 
     // 今日の日付をデフォルトでセットする
-    const today = new Date().toISOString().split('T')[0];  // 今日の日付をYYYY-MM-DD形式で取得
-    summaryDateInput.value = today;
-    noteDateInput.value = today;
+    setDefaultDate();
 
-    // Satisfaction Levelの追加ボタンをクリックしたときにモーダルを開く
-    document.querySelector('.register-reading-note').addEventListener('click', function() {
-        inputType = 'reading_note'; // 削除タイプを設定
+    // イベントリスナーの設定
+    document.querySelector('.register-reading-note').addEventListener('click', () => openModal('reading_note'));
+    document.querySelector('.register-satisfaction-level').addEventListener('click', () => openModal('satisfaction_level'));
+    confirmAddButton.addEventListener('click', handleSubmit);
+    // キャンセルボタンをクリックしたときにモーダルを閉じる
+    document.getElementById('cancelButton').addEventListener('click', () => inputModal.hide());
 
-        // Reading Noteの詳細を表示し、Satisfaction Levelの詳細を隠す
-        document.getElementById("register-reading-note-form").style.display = 'block';
-        document.getElementById("register-satisfaction-level-form").style.display = 'none';
+    
+    function setDefaultDate() {
+        const today = new Date().toISOString().split('T')[0];
+        summaryDateInput.value = today;
+        noteDateInput.value = today;
+    }
+
+    function openModal(type) {
+        inputType = type;
+        if (type === 'reading_note') {
+            document.getElementById("register-reading-note-form").style.display = 'block';
+            document.getElementById("register-satisfaction-level-form").style.display = 'none';
+        } else if (type === 'satisfaction_level') {
+            document.getElementById("register-satisfaction-level-form").style.display = 'block';
+            document.getElementById("register-reading-note-form").style.display = 'none';
+        }
         inputModal.show();
-    });
-    // Satisfaction Levelの追加ボタンをクリックしたときにモーダルを開く
-    document.querySelector('.register-satisfaction-level').addEventListener('click', function() {
-        inputType = 'satisfaction_level'; // 削除タイプを設定
+    }
 
-        // Reading Noteの詳細を表示し、Satisfaction Levelの詳細を隠す
-        document.getElementById("register-satisfaction-level-form").style.display = 'block';
-        document.getElementById("register-reading-note-form").style.display = 'none';
-        inputModal.show();
-    });
-
-    // Satisfaction Level登録の確認ボタンが押された場合
-    confirmAddButton.addEventListener('click', function() {
-        const learning = document.getElementById('note-learning-input').value;
-        const impression = document.getElementById('note-impression-input').value;
-        const noteDate = document.getElementById('note-date-input').value;
-        const satisfactionLevel = document.getElementById('satisfaction-level-input').value;
-        const summaryDate = document.getElementById('summary-date-input').value;
+    function handleSubmit() {
+        let url = '';
+        let formData = new FormData();
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-        if(inputType=='reading_note'){
-            // ボタンの data-book-code 属性から book_code を取得
+        if (inputType === 'reading_note') {
+            const learning = document.getElementById('note-learning-input').value;
+            const impression = document.getElementById('note-impression-input').value;
+            const noteDate = document.getElementById('note-date-input').value;
             const bookCode = document.querySelector('.register-reading-note').getAttribute('data-book-code');
-            // フォームデータを構築
-            const formData = new FormData();
+
+            url = `/readingnote/${bookCode}/`;
             formData.append('learning', learning);
             formData.append('impression', impression);
             formData.append('registration_date', noteDate);
-            formData.append('csrfmiddlewaretoken', csrfToken);
-
-            // AJAXリクエストを送信
-            fetch(`/readingnote/${bookCode}/`, {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    // 成功した場合、ページをリロードまたはデータの再描画
-                    window.location.reload();
-                } else {
-                    console.error('登録に失敗しました。');
-                    document.getElementById('modal-error-message').textContent = '登録に失敗しました。再度お試しください。';
-                }
-            });
-
-        }
-        else if(inputType=='satisfaction_level'){
-            // ボタンの data-book-code 属性から book_code を取得
+        } else if (inputType === 'satisfaction_level') {
+            const satisfactionLevel = document.getElementById('satisfaction-level-input').value;
+            const summaryDate = document.getElementById('summary-date-input').value;
             const bookCode = document.querySelector('.register-satisfaction-level').getAttribute('data-book-code');
 
-            // フォームデータを構築
-            const formData = new FormData();
+            url = `/postreading/${bookCode}/`;
             formData.append('satisfaction_level', satisfactionLevel);
             formData.append('registration_date', summaryDate);
-            formData.append('csrfmiddlewaretoken', csrfToken);
-
-            // AJAXリクエストを送信
-            fetch(`/postreading/${bookCode}/`, {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    // 成功した場合、ページをリロードまたはデータの再描画
-                    window.location.reload();
-                } else {
-                    console.error('登録に失敗しました。');
-                    document.getElementById('modal-error-message').textContent = '登録に失敗しました。再度お試しください。';
-                }
-            });
         }
-    });
 
-    // キャンセルボタンをクリックしたときにモーダルを閉じる
-    document.getElementById('cancelButton').addEventListener('click', function() {
-        inputModal.hide();
-    });
+        formData.append('csrfmiddlewaretoken', csrfToken);
+        sendPostRequest(url, formData);
+    }
+
+    function sendPostRequest(url, formData) {
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('登録に失敗しました。');
+                showError('登録に失敗しました。再度お試しください。');
+            }
+        });
+    }
+
+    function showError(message) {
+        document.getElementById('modal-error-message').textContent = message;
+    }
 });
