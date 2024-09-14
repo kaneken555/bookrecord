@@ -1,2 +1,2 @@
 変更内容：
-Satisfaction Levelの入力画面をモーダルウィンドウ化(detail)
+Reading Note/Satisfaction Levelの入力/削除画面をモーダルウィンドウ化(detail)
