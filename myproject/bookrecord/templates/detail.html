@@ -54,18 +54,20 @@
                 <ul class="list-group">
                     {% for note in reading_notes %}
                         <li class="list-group-item">
-                            <strong>日付:</strong> {{ note.registration_date }}<br>
-                            <strong>気づき:</strong> {{ note.impression }}<br>
-                            <strong>学び:</strong> {{ note.learning }}<br>
+                            <strong>日付:</strong> <span class="note-date">{{ note.registration_date }}</span><br>
+                            <strong>気づき:</strong> <span class="note-impression">{{ note.impression }}</span><br>
+                            <strong>学び:</strong> <span class="note-learning">{{ note.learning }}</span><br>
                             {% if basic_info.registrant == user.username %}
                                 <a href="{% url 'update_reading_note' note.note_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
-                                <a href="{% url 'delete_reading_note' note.note_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                                <!-- <a href="{% url 'delete_reading_note' note.note_id %}" class="btn btn-danger btn-sm mt-2">Delete</a> -->
+                                <button class="btn btn-danger btn-sm mt-2 delete-reading-note" data-note-id="{{ note.pk }}" type="button">Delete:モーダル</button>
                             {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
                 {% if basic_info.registrant == user.username %}
-                    <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Reading Note</a>
+                    <!-- <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Reading Note</a> -->
+                    <button class="btn btn-primary btn-sm mt-2 register-reading-note"  data-book-code="{{ book.book_code }}" type="button">Register:モーダル</button>
                 {% endif %}
             </div>
 
@@ -75,19 +77,21 @@
                 <ul class="list-group">
                     {% for summary in post_reading_summaries %}
                         <li class="list-group-item">
-                            <strong>日付:</strong> {{ summary.registration_date }}<br>
+                            <strong>日付:</strong> <span class="summary-date">{{ summary.registration_date }}</span><br>
                             <!-- <strong>気づき:</strong> {{ summary.impression }}<br>
                             <strong>学び:</strong> {{ summary.learning }}<br> -->
-                            <strong>満足度:</strong> {{ summary.satisfaction_level }}<br>
+                            <strong>満足度:</strong> <span class="satisfaction-level">{{ summary.satisfaction_level }}</span><br>
                             {% if summary.basic_info_code.registrant == user.username %}
                                 <a href="{% url 'update_post_reading_summary' summary.summary_id %}" class="btn btn-warning btn-sm mt-2">Edit</a>
-                                <a href="{% url 'delete_post_reading_summary' summary.summary_id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                                <!-- <a href="{% url 'delete_post_reading_summary' summary.summary_id %}" class="btn btn-danger btn-sm mt-2">Delete</a> -->
+                                <button class="btn btn-danger btn-sm mt-2 delete-satisfaction-level" data-summary-id="{{ summary.pk }}" type="button">Delete:モーダル</button>
                             {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
                 {% if basic_info.registrant == user.username %}
-                    <a href="{% url 'postreading' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Satisfaction Level</a>
+                    <!-- <a href="{% url 'postreading' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Satisfaction Level</a> -->
+                    <button class="btn btn-primary btn-sm mt-2 register-satisfaction-level"  data-book-code="{{ book.book_code }}" type="button">Register:モーダル</button>
                 {% endif %}
             </div>
 
@@ -95,5 +99,90 @@
         </div>
     </div>
 </div>
+
+<!-- モーダルウィンドウ -->
+<div id="myModal" class="modal">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">{{ book.title }}</h5> <!-- モーダルタイトルにDjango変数を表示 -->
+                <button type="button" class="btn-close close" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">この項目を削除しますか？</p>
+
+                <!-- Reading Notes用の表示項目 -->
+                <div id="reading-note-details">
+                    <strong>気づき:</strong> <span id="note-impression"></span><br>
+                    <strong>学び:</strong> <span id="note-learning"></span><br>
+                    <strong>日付:</strong> <span id="note-date"></span>
+                </div>
+
+                <!-- Satisfaction Level用の表示項目 -->
+                <div id="satisfaction-level-details" style="display:none;">
+                    <strong>満足度:</strong> <span id="satisfaction-level"></span><br>
+                    <strong>日付:</strong> <span id="summary-date"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmDeleteButton" class="btn btn-success">削除</button>
+                <button id="cancel-btn" class="btn btn-secondary">キャンセル</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Satisfaction Level登録用モーダル -->
+<div id="inputModal" class="modal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">{{ book.title }}</h5> <!-- モーダルタイトルにDjango変数を表示 -->
+                <!-- <button type="button" class="btn-close close" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+                <div id="register-reading-note-form">
+                    <form id="reading-note-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="reading-note-leaning">学び</label>
+                            <input type="text" class="form-control" id="note-learning-input" name="reading_note_learning" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reading-note-impression">感想</label>
+                            <input type="text" class="form-control" id="note-impression-input" name="reading_note_impression" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="note-date">日付</label>
+                            <input type="date" class="form-control" id="note-date-input" name="note_date" required>
+                        </div>
+                    </form>
+                </div>
+                <div id="register-satisfaction-level-form" style="display:none;">
+                    <form id="satisfaction-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="satisfaction-level">満足度</label>
+                            <input type="number" min="1" max="5" class="form-control" id="satisfaction-level-input" name="satisfaction_level" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="summary-date">日付</label>
+                            <input type="date" class="form-control" id="summary-date-input" name="summary_date" required>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="confirmAddButton" class="btn btn-primary">登録</button>
+                <button id="cancelButton" class="btn btn-secondary">キャンセル</button>
+            </div>
+            <div id="modal-error-message" class="text-danger"></div>
+        </div>
+    </div>
+</div>
+
+  
 {% endblock %}
 

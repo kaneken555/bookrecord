@@ -1,0 +1,2 @@
+変更内容：
+Reading Note/Satisfaction Levelの入力/削除画面をモーダルウィンドウ化(detail)
