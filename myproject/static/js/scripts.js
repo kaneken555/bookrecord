@@ -265,31 +265,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    // モーダル関連の要素
     const inputModal = new bootstrap.Modal(document.getElementById('inputModal')); // Satisfaction Levelモーダルの初期化
     const confirmAddButton = document.getElementById('confirmAddButton');
     const summaryDateInput = document.getElementById('summary-date-input');
     const noteDateInput = document.getElementById('note-date-input');
     let inputType = null; // 'reading_note' か 'satisfaction_level' を格納
+    let currentBookCode = null; // 現在の選択された本のコードを格納
 
     // 今日の日付をデフォルトでセットする
     setDefaultDate();
 
     // イベントリスナーの設定
-    document.querySelector('.register-reading-note').addEventListener('click', () => openModal('reading_note'));
-    document.querySelector('.register-satisfaction-level').addEventListener('click', () => openModal('satisfaction_level'));
+    // document.querySelectorAll('.register-reading-note').addEventListener('click', () => openModal('reading_note'));
+    // document.querySelectorAll('.register-satisfaction-level').addEventListener('click', () => openModal('satisfaction_level'));
+    document.querySelectorAll('.register-reading-note').forEach(button => {
+        button.addEventListener('click', () => openModal('reading_note', button));
+    });
+    
+    document.querySelectorAll('.register-satisfaction-level').forEach(button => {
+        button.addEventListener('click', () => openModal('satisfaction_level', button));
+    });
+    
     confirmAddButton.addEventListener('click', handleSubmit);
     // キャンセルボタンをクリックしたときにモーダルを閉じる
     document.getElementById('cancelButton').addEventListener('click', () => inputModal.hide());
 
-    
+    // 日付のデフォルト値をセットする関数
     function setDefaultDate() {
         const today = new Date().toISOString().split('T')[0];
         summaryDateInput.value = today;
         noteDateInput.value = today;
     }
 
-    function openModal(type) {
+    function openModal(type, button) {
         inputType = type;
+        currentBookCode = button.getAttribute('data-book-code');
+        let bookTitle;
+        // トップ画面と詳細画面で処理を分岐
+        if (document.querySelector('.book-item')) {
+            // トップ画面の場合
+            bookTitle = button.closest('.book-item').querySelector('.book-title a').textContent;
+        } else {
+            // 詳細画面の場合
+            bookTitle = document.querySelector('h2').textContent.replace('Details : ', '');
+        }
+        // const bookTitle = button.closest('.book-item').querySelector('.book-title a').textContent;
+        // モーダルのタイトルに本のタイトルを設定
+        document.getElementById('modalLabel').textContent = bookTitle;
+
         if (type === 'reading_note') {
             document.getElementById("register-reading-note-form").style.display = 'block';
             document.getElementById("register-satisfaction-level-form").style.display = 'none';
@@ -311,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const noteDate = document.getElementById('note-date-input').value;
             const bookCode = document.querySelector('.register-reading-note').getAttribute('data-book-code');
 
-            url = `/readingnote/${bookCode}/`;
+            url = `/readingnote/${currentBookCode}/`;
             formData.append('learning', learning);
             formData.append('impression', impression);
             formData.append('registration_date', noteDate);
@@ -320,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const summaryDate = document.getElementById('summary-date-input').value;
             const bookCode = document.querySelector('.register-satisfaction-level').getAttribute('data-book-code');
 
-            url = `/postreading/${bookCode}/`;
+            url = `/postreading/${currentBookCode}/`;
             formData.append('satisfaction_level', satisfactionLevel);
             formData.append('registration_date', summaryDate);
         }
@@ -329,6 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sendPostRequest(url, formData);
     }
 
+    // サーバーにPOSTリクエストを送信
     function sendPostRequest(url, formData) {
         fetch(url, {
             method: 'POST',
