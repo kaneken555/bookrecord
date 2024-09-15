@@ -4,7 +4,8 @@
 {% block title %}Detail{% endblock %}
 
 {% block content %}
-{% include 'includes/modal_form.html' %}
+{% include 'includes/register_modal_form.html' %}
+{% include 'includes/delete_modal_form.html' %}
 <div class="container custom-container">
     <h2 class="my-4">Details : {{ book.title }}</h2>
 
@@ -102,26 +103,26 @@
 </div>
 
 <!-- モーダルウィンドウ -->
-<div id="myModal" class="modal">
+<!-- <div id="myModal" class="modal">
     <div class="modal-dialog modal-lg" role="document">
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">{{ book.title }}</h5> <!-- モーダルタイトルにDjango変数を表示 -->
+                <h5 class="modal-title" id="modalLabel">{{ book.title }}</h5>
                 <button type="button" class="btn-close close" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p id="modal-message">この項目を削除しますか？</p>
+                <p id="modal-message">この項目を削除しますか？</p> -->
 
                 <!-- Reading Notes用の表示項目 -->
-                <div id="reading-note-details">
+                <!-- <div id="reading-note-details">
                     <strong>気づき:</strong> <span id="note-impression"></span><br>
                     <strong>学び:</strong> <span id="note-learning"></span><br>
                     <strong>日付:</strong> <span id="note-date"></span>
-                </div>
+                </div> -->
 
                 <!-- Satisfaction Level用の表示項目 -->
-                <div id="satisfaction-level-details" style="display:none;">
+                <!-- <div id="satisfaction-level-details" style="display:none;">
                     <strong>満足度:</strong> <span id="satisfaction-level"></span><br>
                     <strong>日付:</strong> <span id="summary-date"></span>
                 </div>
@@ -132,7 +133,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- Satisfaction Level登録用モーダル -->
 <!-- <div id="inputModal" class="modal">
