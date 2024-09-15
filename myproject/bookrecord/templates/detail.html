@@ -4,6 +4,7 @@
 {% block title %}Detail{% endblock %}
 
 {% block content %}
+{% include 'includes/modal_form.html' %}
 <div class="container custom-container">
     <h2 class="my-4">Details : {{ book.title }}</h2>
 
@@ -134,12 +135,11 @@
 </div>
 
 <!-- Satisfaction Level登録用モーダル -->
-<div id="inputModal" class="modal">
+<!-- <div id="inputModal" class="modal">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">{{ book.title }}</h5> <!-- モーダルタイトルにDjango変数を表示 -->
-                <!-- <button type="button" class="btn-close close" aria-label="Close"></button> -->
+                <h5 class="modal-title" id="modalLabel">{{ book.title }}</h5>
             </div>
             <div class="modal-body">
                 <div id="register-reading-note-form">
@@ -181,7 +181,7 @@
             <div id="modal-error-message" class="text-danger"></div>
         </div>
     </div>
-</div>
+</div> -->
 
   
 {% endblock %}
