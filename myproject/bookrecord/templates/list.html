@@ -4,6 +4,7 @@
 {% block title %}Book List{% endblock %}
 
 {% block content %}
+{% include 'includes/register_modal_form.html' %}
 <div class="container custom-container">
     <h2 class="my-4">Your Books</h2>
     <!-- ジャンルごとのタブ -->
@@ -39,8 +40,10 @@
                                 <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
                             </h5>
                             <div class="mt-auto">
-                                <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
-                                <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Satisfaction Level</a>
+                                <!-- <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a> -->
+                                <!-- <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Satisfaction Level</a> -->
+                                <button class="btn btn-primary btn-sm mt-1 register-reading-note" data-book-code="{{ book.book_code }}">Add Reading Note</button>
+                                <button class="btn btn-secondary btn-sm mt-1 register-satisfaction-level" data-book-code="{{ book.book_code }}">Add Satisfaction Level</button>
                             </div>
                         </div>
                     </div>
@@ -73,8 +76,10 @@
                                 <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
                             </h5>
                             <div class="mt-auto">
-                                <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a>
-                                <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Satisfaction Level</a>
+                                <!-- <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a> -->
+                                <!-- <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Satisfaction Level</a> -->
+                                <button class="btn btn-primary btn-sm mt-1 register-reading-note" data-book-code="{{ book.book_code }}">Add Reading Note</button>
+                                <button class="btn btn-secondary btn-sm mt-1 register-satisfaction-level" data-book-code="{{ book.book_code }}">Add Satisfaction Level</button>
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,8 @@
+変更内容：
+トップ画面、リスト画面にモーダルウィンドウを追加（Reading Note/Satisfaction Level）
+
+詳細：
+トップ画面、リスト画面、詳細画面で共通のモーダルウィンドウを表示できるようにした
+- register_modal_form.html
+詳細画面のモーダルウィンドウをinclude化
+- delete_modal_form.html

@@ -1,0 +1,51 @@
+<!-- templates/includes/register_modal_form.html -->
+<!-- Reading Note/Satisfaction Level登録用モーダル -->
+<div id="inputModal" class="modal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel"></h5>
+                <!-- <h5 class="modal-title" id="modalLabel"><span id="modal-book-title"></span></h5> -->
+                <!-- <button type="button" class="btn-close close" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+                <div id="register-reading-note-form">
+                    <form id="reading-note-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="reading-note-leaning">学び</label>
+                            <input type="text" class="form-control" id="note-learning-input" name="reading_note_learning" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reading-note-impression">感想</label>
+                            <input type="text" class="form-control" id="note-impression-input" name="reading_note_impression" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="note-date">日付</label>
+                            <input type="date" class="form-control" id="note-date-input" name="note_date" required>
+                        </div>
+                    </form>
+                </div>
+                <div id="register-satisfaction-level-form" style="display:none;">
+                    <form id="satisfaction-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="satisfaction-level">満足度</label>
+                            <input type="number" min="1" max="5" class="form-control" id="satisfaction-level-input" name="satisfaction_level" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="summary-date">日付</label>
+                            <input type="date" class="form-control" id="summary-date-input" name="summary_date" required>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="confirmAddButton" class="btn btn-primary">登録</button>
+                <button id="cancelButton" class="btn btn-secondary">キャンセル</button>
+            </div>
+            <div id="modal-error-message" class="text-danger"></div>
+        </div>
+    </div>
+</div>
