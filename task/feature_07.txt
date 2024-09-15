@@ -1,0 +1,2 @@
+変更内容：
+トップ画面、リスト画面にモーダルウィンドウを追加（Reading Note/Satisfaction Level）
