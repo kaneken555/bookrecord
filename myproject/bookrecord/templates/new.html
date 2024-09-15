@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}New Book{% endblock %}
 
@@ -97,4 +98,8 @@
     </div>
   </div>
 
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="module" src="{% static 'js/newPage.js' %}"></script>
 {% endblock %}
