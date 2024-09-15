@@ -19,7 +19,9 @@
         {% endfor %}
     </ul>
 
-    <div class="shelf-container">
+    <!-- 未完了の本 -->
+    {% include 'includes/book_list.html' with books=unfinished_books %}
+    <!-- <div class="shelf-container">
         <div class="book-shelf">
             {% for book in unfinished_books %}
                 {% if forloop.counter0|divisibleby:5 and not forloop.first %}
@@ -40,10 +42,10 @@
                             <h5 class="book-title">
                                 <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
                             </h5>
-                            <div class="mt-auto">
+                            <div class="mt-auto"> -->
                                 <!-- <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a> -->
                                 <!-- <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Satisfaction Level</a> -->
-                                <button class="btn btn-primary btn-sm mt-1 register-reading-note" data-book-code="{{ book.book_code }}">Add Reading Note</button>
+                                <!-- <button class="btn btn-primary btn-sm mt-1 register-reading-note" data-book-code="{{ book.book_code }}">Add Reading Note</button>
                                 <button class="btn btn-secondary btn-sm mt-1 register-satisfaction-level" data-book-code="{{ book.book_code }}">Add Satisfaction Level</button>
                             </div>
                         </div>
@@ -51,7 +53,7 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
+    </div> -->
 
     <h2 class="my-4">Other Users' Books</h2>
     <div class="shelf-container">

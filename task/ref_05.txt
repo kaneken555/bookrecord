@@ -1,0 +1,7 @@
+変更内容：
+タイトル検索モーダルウィンドウの部品化
+booklistの共通化
+
+詳細：
+search_results_modal.html作成
+book_list.html作成
