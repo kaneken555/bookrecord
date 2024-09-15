@@ -21,7 +21,8 @@
 
     <!-- 未完了の本 -->
     <h3 class="my-4">Reading Books</h3>
-    <div class="shelf-container" style="max-height: none;">
+    {% include 'includes/book_list.html' with books=unfinished_books %}
+    <!-- <div class="shelf-container" style="max-height: none;">
         <div class="book-shelf">
             {% for book in unfinished_books %}
                 <div class="book-item">
@@ -39,10 +40,10 @@
                             <h5 class="book-title">
                                 <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
                             </h5>
-                            <div class="mt-auto">
+                            <div class="mt-auto"> -->
                                 <!-- <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a> -->
                                 <!-- <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Satisfaction Level</a> -->
-                                <button class="btn btn-primary btn-sm mt-1 register-reading-note" data-book-code="{{ book.book_code }}">Add Reading Note</button>
+                                <!-- <button class="btn btn-primary btn-sm mt-1 register-reading-note" data-book-code="{{ book.book_code }}">Add Reading Note</button>
                                 <button class="btn btn-secondary btn-sm mt-1 register-satisfaction-level" data-book-code="{{ book.book_code }}">Add Satisfaction Level</button>
                             </div>
                         </div>
@@ -52,12 +53,13 @@
                     <div class="shelf-divider"></div>
                 {% endif %}
             {% endfor %}
-        </div>
-    </div>
+        </div> -->
+    <!-- </div> -->
 
     <!-- 完了した本 -->
     <h3 class="my-4">Finished Books</h3>
-    <div class="shelf-container" style="max-height: none;">
+    {% include 'includes/book_list.html' with books=finished_books %}
+    <!-- <div class="shelf-container" style="max-height: none;">
         <div class="book-shelf">
             {% for book in finished_books %}
                 <div class="book-item">
@@ -75,10 +77,10 @@
                             <h5 class="book-title">
                                 <a href="{% url 'detail' book.book_code %}" class="text-decoration-none">{{ book.title }}</a>
                             </h5>
-                            <div class="mt-auto">
+                            <div class="mt-auto"> -->
                                 <!-- <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm">Reading Note</a> -->
                                 <!-- <a href="{% url 'postreading' book.book_code %}" class="btn btn-secondary btn-sm">Satisfaction Level</a> -->
-                                <button class="btn btn-primary btn-sm mt-1 register-reading-note" data-book-code="{{ book.book_code }}">Add Reading Note</button>
+                                <!-- <button class="btn btn-primary btn-sm mt-1 register-reading-note" data-book-code="{{ book.book_code }}">Add Reading Note</button>
                                 <button class="btn btn-secondary btn-sm mt-1 register-satisfaction-level" data-book-code="{{ book.book_code }}">Add Satisfaction Level</button>
                             </div>
                         </div>
@@ -89,6 +91,6 @@
                 {% endif %}
             {% endfor %}
         </div>
-    </div>
+    </div> -->
 </div>
 {% endblock %}
