@@ -1,2 +1,6 @@
 変更内容：
-Editモーダルウィンドウ
+ Updateモーダルウィンドウ
+
+ 詳細：
+ ReadingNote、Satisfactionの更新用のモーダルウィンドウを作成
+ - update_modal_form.html
