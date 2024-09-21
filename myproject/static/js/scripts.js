@@ -372,3 +372,134 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('modal-error-message').textContent = message;
     }
 });
+
+
+// Updateモーダル処理
+document.addEventListener('DOMContentLoaded', function() {
+    // モーダル関連の要素
+    const updateModal = new bootstrap.Modal(document.getElementById('updateModal')); // Updateモーダルの初期化
+    const confirmUpdateButton = document.getElementById('confirmUpdateButton');
+    let updateType = null; // 'reading_note' か 'satisfaction_level' を格納
+    let currentNoteId = null; // 現在の選択されたノートのIDを格納
+
+    // イベントリスナーの設定
+    document.querySelectorAll('.update-reading-note').forEach(button => {
+        button.addEventListener('click', () => openUpdateModal('reading_note', button));
+    });
+    
+    document.querySelectorAll('.update-satisfaction-level').forEach(button => {
+        button.addEventListener('click', () => openUpdateModal('satisfaction_level', button));
+    });
+    
+    confirmUpdateButton.addEventListener('click', handleUpdate);
+    // キャンセルボタンをクリックしたときにモーダルを閉じる
+    document.getElementById('cancelUpdateButton').addEventListener('click', () => updateModal.hide());
+
+    // モーダルを開くときにデフォルト値を設定
+    function openUpdateModal(type, button) {
+        updateType = type;
+        currentNoteId = button.getAttribute('data-note-id') || button.getAttribute('data-summary-id');
+
+        // モーダルのタイトル取得
+        bookTitle = document.querySelector('h2').textContent.replace('Details : ', '');
+        // モーダルのタイトルに本のタイトルを設定
+        document.getElementById('updateModalLabel').textContent = bookTitle;
+
+        if (type === 'reading_note') {
+            const noteElement = button.closest('.list-group-item');
+            const impression = noteElement.querySelector('.note-impression').textContent;
+            const learning = noteElement.querySelector('.note-learning').textContent;
+            const date = noteElement.querySelector('.note-date').textContent;
+
+            // 日付を YYYY-MM-DD 形式に変換
+            const formattedDate = formatDateToInput(date);
+
+            document.getElementById('update-note-impression-input').value = impression;
+            document.getElementById('update-note-learning-input').value = learning;
+            document.getElementById('update-note-date-input').value = formattedDate;
+
+            document.getElementById("update-reading-note-form").style.display = 'block';
+            document.getElementById("update-satisfaction-level-form").style.display = 'none';
+        } else if (type === 'satisfaction_level') {
+            const summaryElement = button.closest('.list-group-item');
+            const satisfactionLevel = summaryElement.querySelector('.satisfaction-level').textContent;
+            const date = summaryElement.querySelector('.summary-date').textContent;
+
+            // 日付を YYYY-MM-DD 形式に変換
+            const formattedDate = formatDateToInput(date);
+
+            document.getElementById('update-satisfaction-level-input').value = satisfactionLevel;
+            document.getElementById('update-summary-date-input').value = formattedDate;
+
+            document.getElementById("update-satisfaction-level-form").style.display = 'block';
+            document.getElementById("update-reading-note-form").style.display = 'none';
+        }
+
+        updateModal.show();
+    }
+
+    // 更新ボタンをクリックしたときの処理
+    function handleUpdate() {
+        let url = '';
+        let formData = new FormData();
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        if (updateType === 'reading_note') {
+            const learning = document.getElementById('update-note-learning-input').value;
+            const impression = document.getElementById('update-note-impression-input').value;
+            const noteDate = document.getElementById('update-note-date-input').value;
+
+            url = `/update_reading_note/${currentNoteId}/`;
+            formData.append('learning', learning);
+            formData.append('impression', impression);
+            formData.append('registration_date', noteDate);
+        } else if (updateType === 'satisfaction_level') {
+            const satisfactionLevel = document.getElementById('update-satisfaction-level-input').value;
+            const summaryDate = document.getElementById('update-summary-date-input').value;
+
+            url = `/update_post_reading_summary/${currentNoteId}/`;
+            formData.append('satisfaction_level', satisfactionLevel);
+            formData.append('registration_date', summaryDate);
+        }
+
+        formData.append('csrfmiddlewaretoken', csrfToken);
+        sendUpdateRequest(url, formData);
+    }
+
+    // サーバーにPOSTリクエストを送信
+    function sendUpdateRequest(url, formData) {
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('更新に失敗しました。');
+                showError('更新に失敗しました。再度お試しください。');
+            }
+        });
+    }
+
+    function showError(message) {
+        document.getElementById('modal-update-error-message').textContent = message;
+    }
+
+    // 日付を YYYY-MM-DD 形式に変換する関数
+    function formatDateToInput(dateString) {
+        // 例: "2024年9月21日" の形式から年、月、日を抽出
+        const datePattern = /(\d+)年(\d+)月(\d+)日/;
+        const match = dateString.match(datePattern);
+    
+        if (match) {
+            const year = match[1];
+            const month = String(match[2]).padStart(2, '0');  // 2桁に揃える
+            const day = String(match[3]).padStart(2, '0');    // 2桁に揃える
+            return `${year}-${month}-${day}`;
+        } else {
+            console.error("Invalid date format:", dateString);
+            return null;  // フォーマットに合わない場合はnullを返す
+        }
+    }
+    
+});
