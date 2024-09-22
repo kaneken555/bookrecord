@@ -18,6 +18,9 @@ from django.core.files.base import ContentFile
 from .db_helpers import get_genres, get_unfinished_books_by_genre, get_finished_books_by_genre, get_other_books_by_genre, search_books_in_app, create_book_user, create_basic_info, add_tags_to_basic_info
 from .external_api_helpers import search_books_google_api
 
+from django.http import JsonResponse
+
+
 @login_required
 def top_view(request):
     genres = get_genres()
@@ -306,3 +309,28 @@ def search_books(request):
     
     data = search_books_google_api(title)
     return JsonResponse(data)
+
+@login_required
+def get_basic_info(request, basic_info_id):
+    try:
+        basic_info = BasicInfo.objects.get(pk=basic_info_id)
+        # basic_info に関連する book を取得
+        book = Book.objects.get(basic_info_code=basic_info)  # ForeignKeyで関連付けられたBookを取得
+        genres = Genre.objects.all()  # 全ジャンルを取得
+
+
+        data = {
+            'title': book.title,
+            'genre': book.genre.genre_id,
+            'genres': list(genres.values('genre_id', 'genre_name')),  # ジャンル一覧を返す
+            'author': book.author,
+            'publisher': book.publisher,
+            'summary': book.summary,
+            'purpose': basic_info.purpose,
+            'buy_reason': basic_info.buy_reason,
+        }
+        return JsonResponse(data)
+    except BasicInfo.DoesNotExist:
+        return JsonResponse({'error': 'Basic Information not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

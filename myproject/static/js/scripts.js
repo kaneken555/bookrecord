@@ -501,5 +501,113 @@ document.addEventListener('DOMContentLoaded', function() {
             return null;  // フォーマットに合わない場合はnullを返す
         }
     }
-    
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const updateBasicInfoModal = new bootstrap.Modal(document.getElementById('updateBasicInfoModal')); // モーダルの初期化
+    // const updateBasicInfoForm = document.getElementById('updateBasicInfoForm');
+    let currentBasicInfoId = null;
+    const confirmBasicInfoUpdateButton = document.getElementById("confirmBasicInfoUpdateButton");
+
+
+    confirmBasicInfoUpdateButton.addEventListener('click', handleUpdate);
+
+    // ボタンがクリックされたときにモーダルを開く
+    document.querySelectorAll('.update-basic-info').forEach(button => {
+        button.addEventListener('click', function() {
+            // console.log('start');
+            // // モーダルを表示
+            // updateBasicInfoModal.show();
+            
+            currentBasicInfoId = this.getAttribute('data-basic-info-id'); // Basic Info IDを取得
+
+            // モーダルのタイトル取得
+            bookTitle = document.querySelector('h2').textContent.replace('Details : ', '');
+            // モーダルのタイトルに本のタイトルを設定
+            document.getElementById('updateBasicInfoModalLabel').textContent = bookTitle;
+
+            // Basic Informationのデータを取得してフォームに設定
+            fetch(`/get_basic_info/${currentBasicInfoId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('id_title').value = data.title;
+                    document.getElementById('id_genre').value = data.genre; // 既存のジャンルを設定
+                    document.getElementById('id_author').value = data.author;
+                    document.getElementById('id_publisher').value = data.publisher;
+                    document.getElementById('id_summary').value = data.summary;
+                    document.getElementById('id_purpose').value = data.purpose;
+                    document.getElementById('id_buy_reason').value = data.buy_reason;
+
+                    // ジャンルの選択肢をクリアしてから設定
+                    const genreSelect = document.getElementById('id_genre');
+                    genreSelect.innerHTML = '';
+                    data.genres.forEach(function(genre) {
+                        const option = document.createElement('option');
+                        option.value = genre.genre_id;
+                        option.textContent = genre.genre_name;
+                        genreSelect.appendChild(option);
+                    });
+
+                    // 現在のジャンルを選択状態にする
+                    genreSelect.value = data.genre;
+
+                    // updateBasicInfoForm.action = `/update_basic_info/${currentBasicInfoId}/`; // フォームのアクションを設定
+                    // console.log(data);
+                    updateBasicInfoModal.show(); // モーダルを表示
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+    });
+
+    // 更新ボタンをクリックしたときの処理
+    function handleUpdate() {
+        let url = '';
+        let formData = new FormData();
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        const title = document.getElementById('id_title').value;
+        const genre = document.getElementById('id_genre').value
+        const author = document.getElementById('id_author').value;
+        const publisher = document.getElementById('id_publisher').value;
+        const summary = document.getElementById('id_summary').value;
+        const purpose = document.getElementById('id_purpose').value;
+        const buy_reason = document.getElementById('id_buy_reason').value;
+
+        url = `/update_basic_info/${currentBasicInfoId}/`;
+        formData.append('title', title);
+        formData.append('genre', genre);
+        formData.append('author', author);
+        formData.append('publisher', publisher);
+        formData.append('summary', summary);
+        formData.append('purpose', purpose);
+        formData.append('buy_reason', buy_reason);
+
+        // console.log('formData',formData);
+
+
+        formData.append('csrfmiddlewaretoken', csrfToken);
+        sendUpdateRequest(url, formData);
+
+    }
+
+    // サーバーにPOSTリクエストを送信
+    function sendUpdateRequest(url, formData) {
+        console.log('sendUpdateRequest');
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('更新に失敗しました。');
+                showError('更新に失敗しました。再度お試しください。');
+            }
+        });
+    }
+
+    function showError(message) {
+        document.getElementById('modal-update-error-message').textContent = message;
+    }
 });

@@ -7,6 +7,7 @@
 {% include 'includes/register_modal_form.html' %}
 {% include 'includes/update_modal_form.html' %}
 {% include 'includes/delete_modal_form.html' %}
+{% include 'includes/update_basic_info_modal_form.html' %}
 <div class="container custom-container">
     <h2 class="my-4">Details : {{ book.title }}</h2>
 
@@ -44,8 +45,9 @@
                             <!-- <strong>Is Finished:</strong> {{ basic_info.is_finished }} -->
                         </div>
                         {% if basic_info.registrant == user.username %}
-                            <a href="{% url 'update_basic_info' basic_info.basic_info_code %}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="{% url 'delete_basic_info' basic_info.basic_info_code %}" class="btn btn-danger btn-sm ml-2">Delete Basic Info and All Related Records</a>
+                            <a href="{% url 'update_basic_info' basic_info.basic_info_code %}" class="btn btn-warning btn-sm mt-2">Edit</a>
+                            <button class="btn btn-warning btn-sm mt-2 update-basic-info" data-basic-info-id="{{ basic_info.basic_info_code }}" type="button">Update:モーダル</button>
+                            <a href="{% url 'delete_basic_info' basic_info.basic_info_code %}" class="btn btn-danger btn-sm mt-2">Delete Basic Info and All Related Records</a>
                         {% endif %}
                     </li>
                 </ul>
