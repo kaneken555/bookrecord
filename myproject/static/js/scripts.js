@@ -510,13 +510,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentBasicInfoId = null;
     const confirmBasicInfoUpdateButton = document.getElementById("confirmBasicInfoUpdateButton");
 
-
     confirmBasicInfoUpdateButton.addEventListener('click', handleUpdate);
 
     // ボタンがクリックされたときにモーダルを開く
     document.querySelectorAll('.update-basic-info').forEach(button => {
         button.addEventListener('click', function() {
-            // console.log('start');
             // // モーダルを表示
             // updateBasicInfoModal.show();
             
@@ -552,8 +550,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     // 現在のジャンルを選択状態にする
                     genreSelect.value = data.genre;
 
-                    // updateBasicInfoForm.action = `/update_basic_info/${currentBasicInfoId}/`; // フォームのアクションを設定
-                    // console.log(data);
                     updateBasicInfoModal.show(); // モーダルを表示
                 })
                 .catch(error => console.error('Error fetching data:', error));
@@ -585,7 +581,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // console.log('formData',formData);
 
-
         formData.append('csrfmiddlewaretoken', csrfToken);
         sendUpdateRequest(url, formData);
 
@@ -610,4 +605,61 @@ document.addEventListener('DOMContentLoaded', function() {
     function showError(message) {
         document.getElementById('modal-update-error-message').textContent = message;
     }
+});
+
+
+// モーダル表示・非表示の処理
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteBasicInfoModal = new bootstrap.Modal(document.getElementById('deleteBasicInfoModal')); // Bootstrapのモーダル初期化
+    let basicInfoIdToDelete = null; // 削除するBasic InfoのIDを保持
+    const confirmBasicInfoDeleteButton = document.getElementById("confirmBasicInfoDeleteButton");
+
+    // モーダルを開く処理
+    document.querySelectorAll(".delete-basic-info").forEach(button => {
+        button.addEventListener('click', function() {
+
+            basicInfoIdToDelete = this.getAttribute("data-basic-info-id"); // Basic Info IDを取得
+            document.getElementById("modal-message").textContent = "このBasic Infoを削除しますか？";
+            deleteBasicInfoModal.show();
+        });
+    });
+
+    // 削除ボタンを押したときの処理
+    confirmBasicInfoDeleteButton.addEventListener('click', function() {
+        // console.log('Button clicked'); // ボタンがクリックされたことを確認
+        if (basicInfoIdToDelete) {
+            let url = `/delete_basic_info/${basicInfoIdToDelete}/`; // 削除用のURL
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')  // CSRFトークンを送信
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/list'; // 成功したらリストページにリダイレクト
+                } else {
+                    console.error('削除に失敗しました。');
+                }
+            }).catch(error => {
+                console.error('削除に失敗しました。', error);
+            });
+        }
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
 });
