@@ -56,9 +56,9 @@ def new(request):
         cover_image_url = request.POST.get('cover-image-url')  # カバー画像URL
 
         
-        print("Book Form Valid:", book_form.is_valid())
-        print("Basic Info Form Valid:", basic_info_form.is_valid())
-        print("Tag Names:", tag_names)
+        # print("Book Form Valid:", book_form.is_valid())
+        # print("Basic Info Form Valid:", basic_info_form.is_valid())
+        # print("Tag Names:", tag_names)
         
         if book_form.is_valid() and basic_info_form.is_valid():
             book = book_form.save(commit=False)
