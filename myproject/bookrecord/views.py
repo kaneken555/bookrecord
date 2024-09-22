@@ -49,7 +49,6 @@ def top_view(request):
     })
 
 
-
 @login_required
 def new(request):
     if request.method == 'POST':

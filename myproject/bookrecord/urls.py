@@ -23,5 +23,4 @@ urlpatterns = [
     path('search_books/', views.search_books, name='search_books'),
     path('get_basic_info/<int:basic_info_id>/', views.get_basic_info, name='get_basic_info'),
 
-
 ]
