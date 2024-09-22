@@ -1,0 +1,19 @@
+<!-- templates/includes/delete_basic_info_modal_form.html -->
+<div id="deleteBasicInfoModal" class="modal fade" tabindex="-1" aria-labelledby="deleteBasicInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteBasicInfoModalLabel">削除確認</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">このBasic Infoを削除しますか？この操作は取り消せません。</p>
+                <div id="modal-delete-error-message" class="text-danger"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmBasicInfoDeleteButton" class="btn btn-danger">削除</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+            </div>
+        </div>
+    </div>
+</div>

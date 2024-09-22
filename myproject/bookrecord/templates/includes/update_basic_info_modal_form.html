@@ -1,0 +1,54 @@
+<!-- templates/includes/update_basic_info_modal_form.html -->
+<div id="updateBasicInfoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updateBasicInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateBasicInfoModalLabel">Edit Basic Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateBasicInfoForm" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_title">タイトル</label>
+                        <input type="text" class="form-control" id="id_title" name="title" required>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="id_title">ジャンル</label>
+                        <input type="text" class="form-control" id="id_genre" name="genre" required>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="id_genre">ジャンル</label>
+                        <select class="form-control" id="id_genre" name="genre" required>
+                            <option value="">---------</option>
+                            {% for genre in genres %}
+                                <option value="{{ genre.genre_id }}">{{ genre.genre_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_author">著者</label>
+                        <input type="text" class="form-control" id="id_author" name="author" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_publisher">出版社</label>
+                        <input type="text" class="form-control" id="id_publisher" name="publisher" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_summary">概要</label>
+                        <textarea class="form-control" id="id_summary" name="summary" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_purpose">目的</label>
+                        <input type="text" class="form-control" id="id_purpose" name="purpose">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_buy_reason">購入のきっかけ</label>
+                        <input type="text" class="form-control" id="id_buy_reason" name="buy_reason">
+                    </div>
+                    <button id="confirmBasicInfoUpdateButton" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
