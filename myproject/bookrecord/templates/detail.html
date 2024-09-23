@@ -47,9 +47,10 @@
                         </div>
                         {% if basic_info.registrant == user.username %}
                             <!-- <a href="{% url 'update_basic_info' basic_info.basic_info_code %}" class="btn btn-warning btn-sm mt-2">Edit</a> -->
-                            <button class="btn btn-warning btn-sm mt-2 update-basic-info" data-basic-info-id="{{ basic_info.basic_info_code }}" type="button">Update:モーダル</button>
+                            <button class="btn btn-warning btn-sm mt-2 update-basic-info" data-basic-info-id="{{ basic_info.basic_info_code }}" type="button">Update</button>
                             <!-- <a href="{% url 'delete_basic_info' basic_info.basic_info_code %}" class="btn btn-danger btn-sm mt-2">Delete Basic Info and All Related Records</a> -->
-                            <button class="btn btn-danger btn-sm mt-2 delete-basic-info" data-basic-info-id="{{ basic_info.basic_info_code }}" type="button">Delete:モーダル</button>
+                            <button class="btn btn-danger btn-sm mt-2 delete-basic-info" data-basic-info-id="{{ basic_info.basic_info_code }}" type="button">Delete</button>
+
                         {% endif %}
                     </li>
                 </ul>
@@ -67,15 +68,15 @@
                             {% if basic_info.registrant == user.username %}
                                 <!-- <a href="{% url 'update_reading_note' note.note_id %}" class="btn btn-warning btn-sm mt-2">Edit</a> -->
                                 <!-- <a href="{% url 'delete_reading_note' note.note_id %}" class="btn btn-danger btn-sm mt-2">Delete</a> -->
-                                <button class="btn btn-danger btn-sm mt-2 update-reading-note" data-note-id="{{ note.pk }}" type="button">Update:モーダル</button>
-                                <button class="btn btn-danger btn-sm mt-2 delete-reading-note" data-note-id="{{ note.pk }}" type="button">Delete:モーダル</button>
+                                <button class="btn btn-warning btn-sm mt-2 update-reading-note" data-note-id="{{ note.pk }}" type="button">Update</button>
+                                <button class="btn btn-danger btn-sm mt-2 delete-reading-note" data-note-id="{{ note.pk }}" type="button">Delete</button>
                             {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
                 {% if basic_info.registrant == user.username %}
                     <!-- <a href="{% url 'readingnote' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Reading Note</a> -->
-                    <button class="btn btn-primary btn-sm mt-2 register-reading-note"  data-book-code="{{ book.book_code }}" type="button">Register:モーダル</button>
+                    <button class="btn btn-primary btn-sm mt-2 register-reading-note"  data-book-code="{{ book.book_code }}" type="button">Register</button>
                 {% endif %}
             </div>
 
@@ -92,15 +93,15 @@
                             {% if summary.basic_info_code.registrant == user.username %}
                                 <!-- <a href="{% url 'update_post_reading_summary' summary.summary_id %}" class="btn btn-warning btn-sm mt-2">Edit</a> -->
                                 <!-- <a href="{% url 'delete_post_reading_summary' summary.summary_id %}" class="btn btn-danger btn-sm mt-2">Delete</a> -->
-                                <button class="btn btn-danger btn-sm mt-2 update-satisfaction-level" data-summary-id="{{ summary.pk }}" type="button">Update:モーダル</button>
-                                <button class="btn btn-danger btn-sm mt-2 delete-satisfaction-level" data-summary-id="{{ summary.pk }}" type="button">Delete:モーダル</button>
+                                <button class="btn btn-warning btn-sm mt-2 update-satisfaction-level" data-summary-id="{{ summary.pk }}" type="button">Update</button>
+                                <button class="btn btn-danger btn-sm mt-2 delete-satisfaction-level" data-summary-id="{{ summary.pk }}" type="button">Delete</button>
                             {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
                 {% if basic_info.registrant == user.username %}
                     <!-- <a href="{% url 'postreading' book.book_code %}" class="btn btn-primary btn-sm mt-3">Add Satisfaction Level</a> -->
-                    <button class="btn btn-primary btn-sm mt-2 register-satisfaction-level"  data-book-code="{{ book.book_code }}" type="button">Register:モーダル</button>
+                    <button class="btn btn-primary btn-sm mt-2 register-satisfaction-level"  data-book-code="{{ book.book_code }}" type="button">Register</button>
                 {% endif %}
             </div>
 
