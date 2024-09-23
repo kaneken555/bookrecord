@@ -35,7 +35,11 @@
 
 本登録　　  
 読書記録  
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/b3bff08b-6bb5-472c-bec3-13c9002e7165">
+
 本/読書記録削除  
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/ca69731d-1fbb-4a27-8934-41f744cc604a">
+
 登録リスト確認  
 <img width="800" alt="image" src="https://github.com/user-attachments/assets/bf5b7960-5701-4d90-852d-763ef2bc281c">
 
