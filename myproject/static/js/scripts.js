@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-   
+
+// Search Books
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("searchButton");
     const searchResultsModal = new bootstrap.Modal(document.getElementById("searchResultsModal"));
@@ -145,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// モーダル表示・非表示の処理
+// Delete
 document.addEventListener('DOMContentLoaded', function() {
     let itemIdToDelete = null;
     let deleteType = null; // 'reading_note' か 'satisfaction_level' を格納
@@ -236,7 +237,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // キャンセルボタンを押した場合の処理
     document.getElementById("cancel-btn").onclick = function() {
-        // alert("キャンセル が押されました。");
         modal.hide(); // モーダルを閉じる
     }
 
@@ -264,6 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+// Register reading_note/satisfaction_level
 document.addEventListener('DOMContentLoaded', function() {
     // モーダル関連の要素
     const inputModal = new bootstrap.Modal(document.getElementById('inputModal')); // Satisfaction Levelモーダルの初期化
@@ -504,6 +505,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+// Update
 document.addEventListener('DOMContentLoaded', function() {
     const updateBasicInfoModal = new bootstrap.Modal(document.getElementById('updateBasicInfoModal')); // モーダルの初期化
     // const updateBasicInfoForm = document.getElementById('updateBasicInfoForm');
@@ -514,10 +516,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ボタンがクリックされたときにモーダルを開く
     document.querySelectorAll('.update-basic-info').forEach(button => {
-        button.addEventListener('click', function() {
-            // // モーダルを表示
-            // updateBasicInfoModal.show();
-            
+        button.addEventListener('click', function() {            
             currentBasicInfoId = this.getAttribute('data-basic-info-id'); // Basic Info IDを取得
 
             // モーダルのタイトル取得
@@ -579,11 +578,8 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('purpose', purpose);
         formData.append('buy_reason', buy_reason);
 
-        // console.log('formData',formData);
-
         formData.append('csrfmiddlewaretoken', csrfToken);
         sendUpdateRequest(url, formData);
-
     }
 
     // サーバーにPOSTリクエストを送信
@@ -608,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// モーダル表示・非表示の処理
+// Delete
 document.addEventListener('DOMContentLoaded', function() {
     const deleteBasicInfoModal = new bootstrap.Modal(document.getElementById('deleteBasicInfoModal')); // Bootstrapのモーダル初期化
     let basicInfoIdToDelete = null; // 削除するBasic InfoのIDを保持

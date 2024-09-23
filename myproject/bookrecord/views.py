@@ -49,7 +49,6 @@ def top_view(request):
     })
 
 
-
 @login_required
 def new(request):
     if request.method == 'POST':
@@ -57,7 +56,6 @@ def new(request):
         basic_info_form = BasicInfoForm(request.POST)
         tag_names = request.POST.getlist('tags')
         cover_image_url = request.POST.get('cover-image-url')  # カバー画像URL
-
         
         # print("Book Form Valid:", book_form.is_valid())
         # print("Basic Info Form Valid:", basic_info_form.is_valid())
@@ -125,7 +123,6 @@ def detail_view(request, book_id):
         'post_reading_summaries': post_reading_summaries,
         'user': user
     })
-
 
 
 @login_required
@@ -317,7 +314,6 @@ def get_basic_info(request, basic_info_id):
         # basic_info に関連する book を取得
         book = Book.objects.get(basic_info_code=basic_info)  # ForeignKeyで関連付けられたBookを取得
         genres = Genre.objects.all()  # 全ジャンルを取得
-
 
         data = {
             'title': book.title,
