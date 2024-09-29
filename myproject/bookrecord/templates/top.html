@@ -6,7 +6,7 @@
 {% block content %}
 {% include 'includes/register_modal_form.html' %}
 <div class="container custom-container">
-    <h2 class="my-4">Your Reading Books</h2>
+    <h2 class="my-4">Your Books</h2>
     <!-- ジャンルごとのタブ -->
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -18,9 +18,26 @@
         </li>
         {% endfor %}
     </ul>
+    
+    <!-- プルダウン_ステータス選択 -->
+    <select id="statusFilter" class="my-4 form-select" data-selected-genre="{{ selected_genre|default_if_none:'all' }}">
+        <option value="all" {% if selected_status == 'all' %}selected{% endif %}>All</option>
+        <option value="finished" {% if selected_status == 'finished' %}selected{% endif %}>Finished Books</option>
+        <option value="unfinished" {% if selected_status == 'unfinished' %}selected{% endif %}>Unfinished Books</option>
+    </select>
+
+    <!-- 全ての本 -->
+    {% if all_books %}
+        <!-- <h3 class="my-4">all_books</h3> -->
+        {% include 'includes/book_list.html' with books=all_books %}
+    {% endif %}
 
     <!-- 未完了の本 -->
-    {% include 'includes/book_list.html' with books=unfinished_books %}
+    {% if unfinished_books %}
+        <!-- <h3 class="my-4">unfinished_books</h3> -->
+        {% include 'includes/book_list.html' with books=unfinished_books %}
+    {% endif %}
+
     <!-- <div class="shelf-container">
         <div class="book-shelf">
             {% for book in unfinished_books %}
@@ -55,6 +72,12 @@
             {% endfor %}
         </div>
     </div> -->
+
+    <!-- 完了の本 -->
+    {% if finished_books %}
+        <!-- <h3 class="my-4">finished_books</h3> -->
+        {% include 'includes/book_list.html' with books=finished_books %}
+    {% endif %}
 
     <h2 class="my-4">Other Users' Books</h2>
     <div class="shelf-container">

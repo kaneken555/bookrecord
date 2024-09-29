@@ -15,7 +15,7 @@ from django.views.decorators.http import require_GET
 from urllib.request import urlopen
 from django.core.files.base import ContentFile
 
-from .db_helpers import get_genres, get_unfinished_books_by_genre, get_finished_books_by_genre, get_other_books_by_genre, search_books_in_app, create_book_user, create_basic_info, add_tags_to_basic_info
+from .db_helpers import get_genres, get_unfinished_books_by_genre, get_finished_books_by_genre, get_other_books_by_genre, search_books_in_app, create_book_user, create_basic_info, add_tags_to_basic_info, get_books_by_genre
 from .external_api_helpers import search_books_google_api
 
 from django.http import JsonResponse
@@ -25,9 +25,29 @@ from django.http import JsonResponse
 def top_view(request):
     genres = get_genres()
     selected_genre = request.GET.get('genre', 'all')
+    selected_status = request.GET.get('is_finished', 'all')  # 'is_finished'のクエリパラメータを取得
+    print(f"Selected status: {selected_status}")
+
+    # 本のステータスに応じてフィルタリング
+    if selected_status == 'finished':
+        all_books = []
+        finished_books = get_finished_books_by_genre(request.user, selected_genre)
+        unfinished_books = []
+    elif selected_status == 'unfinished':
+        all_books = []
+        finished_books = []
+        unfinished_books = get_unfinished_books_by_genre(request.user, selected_genre)
+    else:
+        all_books = get_books_by_genre(request.user, selected_genre)
+        finished_books = []
+        unfinished_books = []
 
     # unfinished_books, other_books = get_books_by_genre(request.user, selected_genre)
-    unfinished_books = get_unfinished_books_by_genre(request.user, selected_genre)
+    # all_books = get_books_by_genre(request.user, selected_genre)
+
+    # finished_books = get_finished_books_by_genre(request.user, selected_genre)
+
+    # unfinished_books = get_unfinished_books_by_genre(request.user, selected_genre)
     other_books = get_other_books_by_genre(request.user, selected_genre)
 
     # if selected_genre == 'all':
@@ -42,10 +62,13 @@ def top_view(request):
     # other_books = [book_user.book_code for book_user in other_book_users]
 
     return render(request, 'top.html', {
+        'all_books': all_books,
         'unfinished_books': unfinished_books,
+        'finished_books': finished_books,
         'other_books': other_books,
         'genres': genres,
-        'selected_genre': selected_genre
+        'selected_genre': selected_genre,
+        'selected_status': selected_status,  # 選択した状態をテンプレートに渡す
     })
 
 
