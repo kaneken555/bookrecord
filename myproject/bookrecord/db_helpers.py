@@ -23,6 +23,16 @@ def get_genres():
 
 #     return unfinished_books, other_books
 
+def get_books_by_genre(user, selected_genre):
+    if selected_genre == 'all':
+        user_book_users = BookUser.objects.filter(user_id=user)
+    else:
+        user_book_users = BookUser.objects.filter(user_id=user, book_code__genre__genre_id=selected_genre)
+    
+    all_books = [book_user.book_code for book_user in user_book_users]
+
+    return all_books
+
 def get_unfinished_books_by_genre(user, selected_genre):
     if selected_genre == 'all':
         user_book_users = BookUser.objects.filter(user_id=user)
@@ -39,9 +49,9 @@ def get_finished_books_by_genre(user, selected_genre):
     else:
         user_book_users = BookUser.objects.filter(user_id=user, book_code__genre__genre_id=selected_genre)
     
-    unfinished_books = [book_user.book_code for book_user in user_book_users if book_user.basic_info_code.is_finished]
+    finished_books = [book_user.book_code for book_user in user_book_users if book_user.basic_info_code.is_finished]
 
-    return unfinished_books
+    return finished_books
 
 def get_other_books_by_genre(user, selected_genre):
     if selected_genre == 'all':

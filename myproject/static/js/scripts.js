@@ -659,3 +659,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
 });
+
+
+// プルダウンで本のステータスによるフィルタリング
+document.getElementById('statusFilter').addEventListener('change', function() {
+    const selectedStatus = this.value;
+    const currentGenre = statusFilter.getAttribute('data-selected-genre');  // data-*属性からDjangoの変数を取得
+    window.location.href = `?genre=${currentGenre}&is_finished=${selectedStatus}`;
+});
+
