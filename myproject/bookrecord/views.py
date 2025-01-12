@@ -1,12 +1,11 @@
 # bookrecord/views.py
 
 import os
-import requests
+import logging
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookForm, BasicInfoForm, ReadingNoteForm, PostReadingSummaryForm
 from .models import BookUser, ReadingNote, PostReadingSummary, BasicInfo, Book, Genre, Tag, BasicInfoTag, InterestedBook
-from django.db.models import Q  # 追加
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -20,13 +19,18 @@ from .external_api_helpers import search_books_google_api
 
 from django.http import JsonResponse
 
+# ロギングの設定
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 @login_required
 def top_view(request):
     genres = get_genres()
     selected_genre = request.GET.get('genre', 'all')
     selected_status = request.GET.get('is_finished', 'all')  # 'is_finished'のクエリパラメータを取得
-    print(f"Selected status: {selected_status}")
+
+    logger.debug(f"Selected genre: {selected_genre}, Selected status: {selected_status}")
+    # print(f"Selected status: {selected_status}")
 
     # 本のステータスに応じてフィルタリング
     if selected_status == 'finished':
@@ -74,6 +78,7 @@ def top_view(request):
 
 @login_required
 def new(request):
+    logger.info("Accessed new book registration view.")
     if request.method == 'POST':
         book_form = BookForm(request.POST, request.FILES)
         basic_info_form = BasicInfoForm(request.POST)
@@ -109,14 +114,17 @@ def new(request):
             #     user_id=request.user,
             #     basic_info_code=basic_info
             # )
-            print(f"BookUser created: {new_book_user}")
 
             add_tags_to_basic_info(basic_info, tag_names)
 
+            logger.info(f"New book registered with ID: {book.book_code}")
             return redirect('top')
         else:
-            print("Book Form Errors:", book_form.errors)
-            print("Basic Info Form Errors:", basic_info_form.errors)
+            # print("Book Form Errors:", book_form.errors)
+            # print("Basic Info Form Errors:", basic_info_form.errors)
+            logger.warning("Form validation failed during book registration.")
+            logger.debug(f"Book Form Errors: {book_form.errors}")
+            logger.debug(f"Basic Info Form Errors: {basic_info_form.errors}")
     else:
         book_form = BookForm()
         basic_info_form = BasicInfoForm()
@@ -126,8 +134,10 @@ def new(request):
         'basic_info_form': basic_info_form,
     })
     
+
 @login_required
 def detail_view(request, book_id):
+    logger.info(f"Accessing details for book ID: {book_id}")
     book = get_object_or_404(Book, book_code=book_id)
     user = request.user
     try:
@@ -150,8 +160,11 @@ def detail_view(request, book_id):
 
 @login_required
 def list_view(request):
+    logger.info("Rendering book list view.")
     genres = get_genres()
     selected_genre = request.GET.get('genre', 'all')
+
+    logger.debug(f"Selected genre for list view: {selected_genre}")
 
     unfinished_books = get_unfinished_books_by_genre(request.user, selected_genre)
     finished_books = get_finished_books_by_genre(request.user, selected_genre)
@@ -172,8 +185,10 @@ def list_view(request):
         'selected_genre': selected_genre
     })
 
+
 @login_required
 def readingnote_view(request, book_id):
+    logger.info(f"Accessing reading note view for book ID: {book_id}")
     book_user = get_object_or_404(BookUser, book_code=book_id, user_id=request.user)
     if request.method == "POST":
         form = ReadingNoteForm(request.POST)
@@ -185,6 +200,7 @@ def readingnote_view(request, book_id):
     else:
         form = ReadingNoteForm()
     return render(request, 'readingnote.html', {'form': form, 'book': book_user.book_code})
+
 
 @login_required
 def postreading_view(request, book_id):
@@ -204,6 +220,7 @@ def postreading_view(request, book_id):
     else:
         form = PostReadingSummaryForm()
     return render(request, 'postreading.html', {'form': form, 'book': book_user.book_code})
+
 
 @login_required
 def update_basic_info(request, basic_info_id):
@@ -226,6 +243,7 @@ def update_basic_info(request, basic_info_id):
         'book_form': book_form
     })
 
+
 @login_required
 def update_reading_note(request, note_id):
     reading_note = get_object_or_404(ReadingNote, pk=note_id)
@@ -237,6 +255,7 @@ def update_reading_note(request, note_id):
     else:
         form = ReadingNoteForm(instance=reading_note)
     return render(request, 'update_reading_note.html', {'form': form})
+
 
 @login_required
 def update_post_reading_summary(request, summary_id):
@@ -250,6 +269,7 @@ def update_post_reading_summary(request, summary_id):
         form = PostReadingSummaryForm(instance=post_reading_summary)
     return render(request, 'update_post_reading_summary.html', {'form': form})
 
+
 @login_required
 def delete_basic_info(request, basic_info_id):
     basic_info = get_object_or_404(BasicInfo, pk=basic_info_id, registrant=request.user.username)
@@ -257,6 +277,7 @@ def delete_basic_info(request, basic_info_id):
         basic_info.delete()
         return redirect('list')
     return render(request, 'confirm_delete.html', {'object': basic_info, 'type': 'Basic Info and all related Reading Notes and Post Reading Summaries'})
+
 
 @login_required
 def delete_reading_note(request, note_id):
@@ -266,6 +287,7 @@ def delete_reading_note(request, note_id):
         return redirect('detail', book_id=reading_note.basic_info_code.book_set.first().book_code)
     return render(request, 'confirm_delete.html', {'object': reading_note, 'type': 'Reading Note'})
 
+
 @login_required
 def delete_post_reading_summary(request, summary_id):
     post_reading_summary = get_object_or_404(PostReadingSummary, pk=summary_id, basic_info_code__registrant=request.user.username)
@@ -273,6 +295,7 @@ def delete_post_reading_summary(request, summary_id):
         post_reading_summary.delete()
         return redirect('detail', book_id=post_reading_summary.basic_info_code.book_set.first().book_code)
     return render(request, 'confirm_delete.html', {'object': post_reading_summary, 'type': 'Post Reading Summary'})
+
 
 @login_required
 def search_view(request):
@@ -284,6 +307,7 @@ def search_view(request):
     user_books = BookUser.objects.filter(user_id=request.user).values_list('book_code', flat=True)
 
     return render(request, 'search_results.html', {'books': books, 'query': query, 'user_books': user_books})
+
 
 @login_required
 def register_book(request, book_id):
@@ -311,6 +335,7 @@ def add_to_interested(request, book_id):
     interested_book, created = InterestedBook.objects.get_or_create(user=request.user, book=book)
     return redirect('top')
 
+
 @login_required
 def interested_list_view(request):
     interested_books = InterestedBook.objects.filter(user=request.user)
@@ -321,6 +346,7 @@ def interested_list_view(request):
         'user_books': user_books,
     })
 
+
 @require_GET
 def search_books(request):
     title = request.GET.get('title', '')
@@ -329,6 +355,7 @@ def search_books(request):
     
     data = search_books_google_api(title)
     return JsonResponse(data)
+
 
 @login_required
 def get_basic_info(request, basic_info_id):
