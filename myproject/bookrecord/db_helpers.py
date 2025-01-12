@@ -23,6 +23,7 @@ def get_genres():
 
 #     return unfinished_books, other_books
 
+
 def get_books_by_genre(user, selected_genre):
     if selected_genre == 'all':
         user_book_users = BookUser.objects.filter(user_id=user)
@@ -32,6 +33,7 @@ def get_books_by_genre(user, selected_genre):
     all_books = [book_user.book_code for book_user in user_book_users]
 
     return all_books
+
 
 def get_unfinished_books_by_genre(user, selected_genre):
     if selected_genre == 'all':
@@ -43,6 +45,7 @@ def get_unfinished_books_by_genre(user, selected_genre):
 
     return unfinished_books
 
+
 def get_finished_books_by_genre(user, selected_genre):
     if selected_genre == 'all':
         user_book_users = BookUser.objects.filter(user_id=user)
@@ -52,6 +55,7 @@ def get_finished_books_by_genre(user, selected_genre):
     finished_books = [book_user.book_code for book_user in user_book_users if book_user.basic_info_code.is_finished]
 
     return finished_books
+
 
 def get_other_books_by_genre(user, selected_genre):
     if selected_genre == 'all':
@@ -63,12 +67,14 @@ def get_other_books_by_genre(user, selected_genre):
 
     return other_books
 
+
 def search_books_in_app(query):
     return Book.objects.filter(
         Q(title__icontains=query) |
         Q(basic_info_code__purpose__icontains=query) |
         Q(basic_info_code__buy_reason__icontains=query)
     )
+
 
 def create_book_user(user, book, basic_info):
     return BookUser.objects.create(
@@ -77,11 +83,13 @@ def create_book_user(user, book, basic_info):
         basic_info_code=basic_info
     )
 
+
 def create_basic_info(registrant, is_finished=False):
     return BasicInfo.objects.create(
         registrant=registrant,
         is_finished=is_finished
     )
+
 
 def add_tags_to_basic_info(basic_info, tag_names):
     for tag_name in tag_names:
